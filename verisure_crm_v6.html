@@ -364,6 +364,8 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
   .venta-name { font-size: 12px; }
 }
 
+
+.extra-bonif-row{padding:4px 2px 8px;margin-top:-4px;}
 </style>
 </head>
 <body>
@@ -454,6 +456,39 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
     </div>
   </div>
 
+
+  <!-- PROMO DEL DÍA -->
+  <div class="card" id="card-promo">
+    <div class="card-title" style="justify-content:space-between">
+      <span style="display:flex;align-items:center;gap:6px"><span class="dot"></span>Promo del día</span>
+      <button onclick="abrirEditarPromo()" style="background:none;border:none;font-size:11px;color:var(--red);font-weight:600;cursor:pointer;font-family:var(--font);padding:0">Editar promos ✏️</button>
+    </div>
+    <div class="toggle-group" id="tg-promo" style="flex-direction:column;gap:8px;margin-bottom:0">
+      <button class="toggle-btn promo-btn active" data-val="ninguna" onclick="setPromo('ninguna',this)" style="text-align:left;border-radius:8px;padding:10px 14px">
+        Sin promo — usar precio de lista
+      </button>
+      <div id="promo-opciones"></div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR PROMOS -->
+  <div id="modal-promos" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;overflow-y:auto;-webkit-overflow-scrolling:touch">
+    <div style="background:var(--white);border-radius:var(--radius);margin:20px auto;padding:24px;width:90%;max-width:480px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:15px;font-weight:600">Editar promos del día</div>
+        <button onclick="cerrarEditarPromo()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--gray-400)">×</button>
+      </div>
+      <div style="font-size:12px;color:var(--gray-400);margin-bottom:16px">Estos valores se guardan en este dispositivo. Actualizalos cada vez que Leo mande nuevas promos.</div>
+      <div id="promos-editor"></div>
+      <button onclick="agregarPromo()" class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%">+ Agregar opción</button>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button onclick="guardarPromos()" class="btn btn-primary">Guardar promos</button>
+        <button onclick="resetPromos()" class="btn btn-secondary btn-sm" style="flex:0.5">Restaurar</button>
+      </div>
+      <div id="promos-feedback" style="display:none;margin-top:10px" class="alert alert-success">✓ Promos actualizadas</div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-title"><span class="dot"></span>Kit y precio</div>
     <div class="section-sep">Precio del kit</div>
@@ -474,6 +509,19 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
     <div class="toggle-group" id="tg-upgrade">
       <button class="toggle-btn active" data-val="No" onclick="setToggle('tg-upgrade',this)">Sin upgrade</button>
       <button class="toggle-btn" data-val="Si" onclick="setToggle('tg-upgrade',this)">Con upgrade</button>
+    </div>
+    <div class="section-sep">Cuotas sin interés</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <select id="sel-cuotas" style="width:100px;padding:9px 12px;font-size:14px" onchange="updateCuotaDisplay()">
+        <option value="1">1 cuota</option>
+        <option value="2">2 cuotas</option>
+        <option value="3">3 cuotas</option>
+        <option value="4">4 cuotas</option>
+        <option value="6" selected>6 cuotas</option>
+        <option value="9">9 cuotas</option>
+        <option value="12">12 cuotas</option>
+      </select>
+      <div id="cuota-display" style="font-size:13px;color:var(--gray-600)">Seleccioná precio para ver cuota</div>
     </div>
     <div class="section-sep" id="express-sep">Express (instalación mismo día · solo RE)</div>
     <div class="toggle-group" id="tg-express">
@@ -987,6 +1035,12 @@ function addExtra(listId,prefix){
     <select>${CANT_OPTS.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
     <select>${PRECIO_EXTRA_OPTS.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
     <button class="btn-remove" onclick="removeExtraRow('${prefix}-row-${idx}')">×</button>
+  </div>
+  <div class="extra-bonif-row" id="${prefix}-bonif-${idx}">
+    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-600);cursor:pointer">
+      <input type="checkbox" id="${prefix}-bonif-chk-${idx}" onchange="onExtraChange(document.getElementById('${prefix}-row-${idx}'))" style="width:14px;height:14px;accent-color:var(--green)">
+      <span>Bonificado (instalación $0, cuota normal)</span>
+    </label>
   </div>`;
   document.getElementById(listId).insertAdjacentHTML('beforeend',html);
   // Disparar imagen del primer dispositivo por defecto
@@ -1005,6 +1059,7 @@ function removeExtraRow(rowId){
 function getExtrasComision(listId){
   let total=0;
   document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+    if(isBonificado(row)) return; // bonificado = $0 comisión en instalación
     const sels=row.querySelectorAll('select');
     const disp=sels[0].value,cantStr=sels[1].value,precio=sels[2].value;
     const cantNum=parseInt(cantStr.replace('x',''));
@@ -1036,7 +1091,10 @@ function getExtrasDesc(listId){
 // ── MÓDULO 1: PRESUPUESTO ──
 function calcPresupuesto(){
   const tipo=getToggle('tg-tipo'),precio=getToggle('tg-precio'),upgrade=getToggle('tg-upgrade'),express=getToggle('tg-express');
-  const baseKit=PRECIOS_KIT['Moonshot1'][precio]||0;
+  // Si hay promo activa, usar precio de promo
+  const baseKit=promoActiva ? promoActiva.precio : (PRECIOS_KIT['Moonshot1'][precio]||0);
+  const esPromo = !!promoActiva;
+  const cuotas = parseInt(document.getElementById('sel-cuotas')?.value||6);
   const baseUp=upgrade==='Si'?(PRECIOS_KIT['Upgrade'][precio]||PRECIOS_KIT['Upgrade']['Medio']):0;
   const cuotaExtras=getExtrasCuota('extras-list');
   const cuotaBase=CUOTA_BASE+(upgrade==='Si'?CUOTA_UPGRADE:0)+cuotaExtras;
@@ -1044,7 +1102,9 @@ function calcPresupuesto(){
   const ivaKit=fmtIVA(baseKit),ivaUp=fmtIVA(baseUp),ivaCuota=fmtIVA(cuotaBase);
 
   let comKit=0,nota='';
-  if(tipo==='RE'||tipo==='RP'){
+  if(esPromo){
+    comKit=0; nota='ℹ️ Promo activa — comisión de kit $0. Sumás extras y bono de ventas.';
+  } else if(tipo==='RE'||tipo==='RP'){
     const tabla=upgrade==='Si'?COM_KIT['Upgrade']:COM_KIT['Kit'];
     if(['Catálogo','Alto','Medio','Bajo'].includes(precio))comKit=tabla[tipo][precio]||0;
     if(precio==='Bajo'&&upgrade==='No')nota='⚠️ Precio Bajo sin upgrade no genera comisión de kit';
@@ -1064,15 +1124,18 @@ function calcPresupuesto(){
     <div class="result-row result-subtotal"><span class="result-label">Upgrade c/IVA</span><span class="result-value">${fmt(ivaUp.total)}</span></div>`;
   }
 
+  const cuotaInstalacion=Math.ceil(baseKit/cuotas);
   html+=`<div class="divider" style="margin:8px 0"></div>
+    <div class="result-row"><span class="result-label">Instalación en cuotas</span><span class="result-value" style="font-size:12px">${cuotas>1?cuotas+'x '+fmt(cuotaInstalacion)+' s/i':'Pago único '+fmt(baseKit)}</span></div>
     <div class="result-row"><span class="result-label">Cuota base s/IVA</span><span class="result-value">${fmt(CUOTA_BASE)}/mes</span></div>`;
   if(upgrade==='Si')html+=`<div class="result-row"><span class="result-label">+ Cuota upgrade</span><span class="result-value">${fmt(CUOTA_UPGRADE)}/mes</span></div>`;
   if(cuotaExtras>0)html+=`<div class="result-row"><span class="result-label">+ Cuota extras</span><span class="result-value">${fmt(cuotaExtras)}/mes</span></div>`;
   html+=`<div class="result-row iva-row"><span class="result-label" style="font-size:11px">+ IVA 21% cuota</span><span class="result-value" style="font-size:11px">${fmt(ivaCuota.iva)}/mes</span></div>
     <div class="result-row result-subtotal"><span class="result-label">Cuota total c/IVA</span><span class="result-value">${fmt(ivaCuota.total)}/mes</span></div>
     <div class="divider" style="margin:8px 0"></div>
+    ${esPromo?`<div class="result-row" style="margin-bottom:4px"><span class="result-label" style="color:var(--green);font-weight:600">🏷️ ${promoActiva.nombre}</span><span class="result-value" style="color:var(--green);font-size:12px">${promoActiva.cuotas} cuotas</span></div>`:''}
     <div class="result-row result-total"><span class="result-label">Tu comisión</span><span class="result-value">${fmt(totalCom)}</span></div>
-    ${nota?`<div style="margin-top:8px;font-size:12px;color:var(--amber)">${nota}</div>`:''}
+    ${nota?`<div style="margin-top:8px;font-size:12px;color:${esPromo?'var(--blue)':'var(--amber)'}">${nota}</div>`:''}
     ${express==='Si'&&tipo==='RE'?'<div style="margin-top:6px;font-size:12px;color:var(--green)">✓ Express — suma al bono del mes</div>':''}
     ${express==='Si'&&tipo==='RP'?'<div style="margin-top:6px;font-size:12px;color:var(--amber)">⚠️ Express solo aplica a visitas RE</div>':''}
   </div>`;
@@ -1102,7 +1165,9 @@ function generarMsgPresupuesto(){
   const celular=document.getElementById('p-celular').value||'(celular)';
   const direccion=document.getElementById('p-direccion').value||'(dirección)';
   const precio=getToggle('tg-precio'),upgrade=getToggle('tg-upgrade');
-  const baseKit=PRECIOS_KIT['Moonshot1'][precio]||0;
+  const baseKit=promoActiva ? promoActiva.precio : (PRECIOS_KIT['Moonshot1'][precio]||0);
+  const cuotas=parseInt(document.getElementById('sel-cuotas')?.value||6);
+  const cuotaInstal=Math.ceil(baseKit/cuotas);
   const baseUp=upgrade==='Si'?(PRECIOS_KIT['Upgrade'][precio]||PRECIOS_KIT['Upgrade']['Medio']):0;
   const cuotaExtras=getExtrasCuota('extras-list');
   const cuotaBase=CUOTA_BASE+(upgrade==='Si'?CUOTA_UPGRADE:0)+cuotaExtras;
@@ -1753,13 +1818,15 @@ function initWA(){
 
 // ── PRICE PREVIEW ──
 function updatePricePreview(){
-  const precio=getToggle('tg-precio');
-  const base=PRECIOS_KIT['Moonshot1'][precio];
+  const base = promoActiva ? promoActiva.precio : (PRECIOS_KIT['Moonshot1'][getToggle('tg-precio')]||0);
   if(!base){document.getElementById('price-preview').style.display='none';return;}
   const iva=Math.round(base*0.21),total=base+iva;
+  const cuotas=parseInt(document.getElementById('sel-cuotas')?.value||6);
+  const cuotaVal=Math.ceil(base/cuotas);
   document.getElementById('price-preview').style.display='block';
-  document.getElementById('price-preview-val').textContent=fmt(base);
-  document.getElementById('price-preview-iva').textContent='+ IVA '+fmt(iva)+' = '+fmt(total)+' c/IVA';
+  document.getElementById('price-preview-val').textContent=fmt(base)+(promoActiva?' 🏷️ PROMO':'');
+  document.getElementById('price-preview-iva').textContent='+ IVA '+fmt(iva)+' = '+fmt(total)+' c/IVA · '+cuotas+'x '+fmt(cuotaVal)+' cuotas s/i';
+  updateCuotaDisplay();
 }
 
 // ── EXPRESS VISIBILITY ──
@@ -1961,6 +2028,170 @@ function onExtraChange(row){
   preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'" style="width:52px;height:52px;object-fit:contain;flex-shrink:0"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
 }
 
+
+// ── PROMOS DEL DÍA ──
+var PROMOS_DEFAULT = [{"nombre": "B\u00e1sico", "precio": 249999, "cuotas": "6/12", "extras_bonif": []}, {"nombre": "B\u00e1sico + 3 ShockSensors de regalo", "precio": 299999, "cuotas": "6/12", "extras_bonif": [{"disp": "Shock Sensor", "cant": "x3"}]}, {"nombre": "B\u00e1sico + Upgrade", "precio": 349999, "cuotas": "6/12", "extras_bonif": [{"disp": "upgrade", "cant": "x1"}]}];
+var promoActiva = null;
+
+function cargarPromos(){
+  try{
+    var stored = localStorage.getItem('vcrm_promos');
+    return stored ? JSON.parse(stored) : PROMOS_DEFAULT.slice();
+  }catch(e){ return PROMOS_DEFAULT.slice(); }
+}
+
+function renderPromoOpciones(){
+  var promos = cargarPromos();
+  var el = document.getElementById('promo-opciones');
+  if(!el) return;
+  el.innerHTML = promos.map(function(p, i){
+    var bonifLabel = p.extras_bonif && p.extras_bonif.length
+      ? ' <span style="font-size:11px;color:var(--green);font-weight:600">+' + p.extras_bonif.map(function(e){ return e.cant+' '+e.disp; }).join(', ') + ' bonificado</span>'
+      : '';
+    return '<button class="toggle-btn promo-btn" data-val="' + i + '" onclick="setPromo(' + i + ',this)" style="text-align:left;border-radius:8px;padding:10px 14px;width:100%">'
+      + '<span style="font-family:var(--mono);font-weight:700">$' + p.precio.toLocaleString('es-AR') + '</span>'
+      + ' · ' + p.nombre
+      + bonifLabel
+      + ' <span style="font-size:11px;color:var(--gray-400)">· ' + p.cuotas + ' cuotas</span>'
+      + '</button>';
+  }).join('');
+}
+
+function setPromo(val, btn){
+  document.querySelectorAll('.promo-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  if(val === 'ninguna'){
+    promoActiva = null;
+    // Restaurar toggles de precio
+    document.querySelectorAll('#tg-precio .toggle-btn').forEach(function(b){ b.disabled = false; b.style.opacity=''; });
+    return;
+  }
+  var promos = cargarPromos();
+  promoActiva = promos[val];
+  // Deshabilitar precio de lista cuando hay promo
+  document.querySelectorAll('#tg-precio .toggle-btn').forEach(function(b){
+    b.classList.remove('active');
+    b.disabled = true;
+    b.style.opacity = '0.4';
+  });
+  updatePricePreview();
+  updateCuotaDisplay();
+}
+
+// ── CUOTAS ──
+function updateCuotaDisplay(){
+  var sel = document.getElementById('sel-cuotas');
+  var cuotas = sel ? parseInt(sel.value) : 6;
+  var precio = promoActiva ? promoActiva.precio : (PRECIOS_KIT['Moonshot1'][getToggle('tg-precio')] || 0);
+  var display = document.getElementById('cuota-display');
+  if(!display) return;
+  if(!precio){ display.textContent = 'Seleccioná precio para ver cuota'; return; }
+  var cuotaVal = Math.ceil(precio / cuotas);
+  display.innerHTML = '<span style="font-family:var(--mono);font-weight:600;color:var(--red);font-size:15px">' + fmt(cuotaVal) + '</span>'
+    + '<span style="color:var(--gray-400)"> x ' + cuotas + ' cuota' + (cuotas > 1 ? 's' : '') + ' s/i</span>';
+}
+
+// ── BONIFICADO CHECK ──
+function isBonificado(row){
+  if(!row) return false;
+  var bonifRow = row.nextElementSibling;
+  if(!bonifRow || !bonifRow.classList.contains('extra-bonif-row')) return false;
+  var chk = bonifRow.querySelector('input[type=checkbox]');
+  return chk ? chk.checked : false;
+}
+
+// ── EDITOR DE PROMOS ──
+function abrirEditarPromo(){
+  var promos = cargarPromos();
+  renderPromosEditor(promos);
+  document.getElementById('modal-promos').style.display = 'block';
+}
+
+function cerrarEditarPromo(){
+  document.getElementById('modal-promos').style.display = 'none';
+  document.getElementById('promos-feedback').style.display = 'none';
+}
+
+function renderPromosEditor(promos){
+  var el = document.getElementById('promos-editor');
+  el.innerHTML = promos.map(function(p, i){
+    return '<div style="background:var(--gray-100);border-radius:8px;padding:12px;margin-bottom:10px;border:1px solid var(--gray-200)">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+      + '<div style="font-size:12px;font-weight:600;color:var(--gray-600)">Opción ' + (i+1) + '</div>'
+      + '<button onclick="eliminarPromoEditor(' + i + ')" style="background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:16px;line-height:1">×</button>'
+      + '</div>'
+      + '<div class="form-grid" style="margin-bottom:8px">'
+      + '<div><label style="font-size:11px;color:var(--gray-600)">Nombre</label>'
+      + '<input type="text" id="pe-nombre-' + i + '" value="' + p.nombre + '" style="font-size:13px;padding:8px 10px"></div>'
+      + '<div><label style="font-size:11px;color:var(--gray-600)">Precio instalación ($)</label>'
+      + '<input type="number" id="pe-precio-' + i + '" value="' + p.precio + '" style="font-size:13px;padding:8px 10px"></div>'
+      + '</div>'
+      + '<div><label style="font-size:11px;color:var(--gray-600)">Cuotas disponibles (ej: 6/12)</label>'
+      + '<input type="text" id="pe-cuotas-' + i + '" value="' + p.cuotas + '" style="font-size:13px;padding:8px 10px;width:100%"></div>'
+      + '<div style="margin-top:8px"><label style="font-size:11px;color:var(--gray-600)">Dispositivos bonificados (separados por coma)</label>'
+      + '<input type="text" id="pe-bonif-' + i + '" value="' + (p.extras_bonif||[]).map(function(e){return e.cant+' '+e.disp;}).join(', ') + '" placeholder="ej: x3 Shock Sensor, x1 Orion" style="font-size:13px;padding:8px 10px;width:100%"></div>'
+      + '</div>';
+  }).join('');
+}
+
+function eliminarPromoEditor(i){
+  var promos = cargarPromos();
+  promos.splice(i, 1);
+  renderPromosEditor(promos);
+  // Guardar temporalmente
+  localStorage.setItem('vcrm_promos_temp', JSON.stringify(promos));
+}
+
+function agregarPromo(){
+  var promos = cargarPromos();
+  promos.push({nombre:'Nueva promo', precio:0, cuotas:'6/12', extras_bonif:[]});
+  renderPromosEditor(promos);
+}
+
+function guardarPromos(){
+  var count = document.querySelectorAll('#promos-editor > div').length;
+  var promos = [];
+  for(var i=0; i<count; i++){
+    var nombreEl = document.getElementById('pe-nombre-' + i);
+    var precioEl = document.getElementById('pe-precio-' + i);
+    var cuotasEl = document.getElementById('pe-cuotas-' + i);
+    var bonifEl = document.getElementById('pe-bonif-' + i);
+    if(!nombreEl) continue;
+    var extras = [];
+    if(bonifEl && bonifEl.value.trim()){
+      bonifEl.value.split(',').forEach(function(part){
+        var t = part.trim();
+        var m = t.match(/^(x\d+)\s+(.+)$/i);
+        if(m) extras.push({cant: m[1], disp: m[2]});
+      });
+    }
+    promos.push({
+      nombre: nombreEl.value.trim(),
+      precio: parseInt(precioEl.value)||0,
+      cuotas: cuotasEl.value.trim(),
+      extras_bonif: extras
+    });
+  }
+  localStorage.setItem('vcrm_promos', JSON.stringify(promos));
+  renderPromoOpciones();
+  document.getElementById('promos-feedback').style.display = 'flex';
+  setTimeout(cerrarEditarPromo, 1500);
+}
+
+function resetPromos(){
+  if(confirm('¿Restaurar las promos por defecto?')){
+    localStorage.removeItem('vcrm_promos');
+    renderPromoOpciones();
+    cerrarEditarPromo();
+  }
+}
+
+// Cerrar modal tocando fondo
+document.addEventListener('DOMContentLoaded', function(){
+  var mp = document.getElementById('modal-promos');
+  if(mp) mp.addEventListener('click', function(e){ if(e.target===this) cerrarEditarPromo(); });
+});
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function() {
   updateHeaderMes();
@@ -1970,6 +2201,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initWA();
   aplicarPerfil();
   chequearOnboarding();
+  renderPromoOpciones();
 });
 </script>
 </body>
