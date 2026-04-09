@@ -23,7 +23,7 @@ body{font-family:var(--font);background:var(--gray-100);color:var(--black);min-h
 
 /* HEADER */
 .header{background:var(--black);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;}
-.header-logo-img{height:44px;width:auto;object-fit:contain;cursor:pointer;transition:opacity 0.2s;filter:brightness(0) invert(1);}
+.header-logo-img{height:44px;width:auto;object-fit:contain;cursor:pointer;filter:brightness(0) invert(1);transition:opacity 0.2s;}
 .header-logo-img:hover{opacity:0.85;}
 .header-right{display:flex;align-items:center;gap:10px;}
 .header-experto{color:var(--gray-400);font-size:12px;cursor:pointer;font-weight:500;}
@@ -79,7 +79,16 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);}
 .price-display-iva{font-size:11px;color:var(--gray-400);margin-top:2px;}
 
 /* RESULT BOX */
-.result-box{background:var(--red-bg);border:1.5px solid rgba(232,0,29,0.15);border-radius:var(--radius);padding:16px;margin-top:12px;position:relative;overflow:hidden;}.result-box::before{content:'';position:absolute;top:-20px;right:-20px;width:180px;height:180px;background:url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/bg-halo-sm.avif') center/contain no-repeat;opacity:0.12;pointer-events:none;}
+
+/* DEVICE IMAGES */
+.device-img-preview{display:flex;align-items:center;gap:10px;background:var(--gray-100);border-radius:var(--radius-sm);padding:8px 12px;margin-top:6px;border:1px solid var(--gray-200);}
+.device-img-preview img{width:48px;height:48px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.15));}
+.device-img-name{font-size:13px;font-weight:500;color:var(--black);}
+.device-img-desc{font-size:11px;color:var(--gray-400);margin-top:2px;}
+/* RESULT BOX halo */
+.result-box{background:var(--red-bg);border:1.5px solid rgba(232,0,29,0.15);border-radius:var(--radius);padding:16px;margin-top:12px;position:relative;overflow:hidden;}
+.result-box::before{content:'';position:absolute;top:-20px;right:-20px;width:180px;height:180px;background:url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/bg-halo-sm.avif') center/contain no-repeat;opacity:0.12;pointer-events:none;}
+
 .result-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(232,0,29,0.1);}
 .result-row:last-child{border-bottom:none;}
 .result-row.iva-row{opacity:0.7;}
@@ -213,21 +222,6 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 .stat-val.green{color:var(--green);}
 .tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;}
 
-
-/* DEVICE IMAGES */
-.device-img-preview {
-  display:flex;align-items:center;gap:10px;
-  background:var(--gray-100);border-radius:var(--radius-sm);
-  padding:8px 12px;margin-top:6px;
-  border:1px solid var(--gray-200);
-}
-.device-img-preview img {
-  width:48px;height:48px;object-fit:contain;flex-shrink:0;
-  filter:drop-shadow(0 1px 3px rgba(0,0,0,0.15));
-}
-.device-img-name {font-size:13px;font-weight:500;color:var(--black);}
-.device-img-desc {font-size:11px;color:var(--gray-400);margin-top:2px;}
-
 @media(max-width:400px){
   .form-grid{grid-template-columns:1fr;}
   .bono-grid{grid-template-columns:1fr;}
@@ -237,54 +231,31 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 </head>
 <body>
 
-
-<!-- ====== ONBOARDING / SETUP ====== -->
+<!-- ====== ONBOARDING ====== -->
 <div id="onboarding" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;overflow-y:auto;background:#0a0a0a url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/parallax-home.webp') center/cover no-repeat">
-  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.88) 100%)"></div>
-  <div style="position:relative;max-width:420px;margin:0 auto;padding:40px 24px 60px">
-    <div style="text-align:center;margin-bottom:32px">
-      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:90px;object-fit:contain;filter:brightness(0) invert(1);margin-bottom:24px;display:block;margin-left:auto;margin-right:auto">
-      <div style="color:var(--white);font-size:22px;font-weight:600;margin-bottom:8px;letter-spacing:-0.3px">Bienvenido al CRM</div>
-      <div style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.6">Completá tus datos para personalizar la herramienta. Podés editarlos en cualquier momento.</div>
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.90) 100%)"></div>
+  <div style="position:relative;max-width:440px;margin:0 auto;padding:36px 20px 60px">
+    <div style="text-align:center;margin-bottom:28px">
+      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:80px;object-fit:contain;filter:brightness(0) invert(1);display:block;margin:0 auto 20px">
+      <div style="color:var(--white);font-size:20px;font-weight:600;margin-bottom:6px">¿Quién sos?</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:13px">Seleccioná tu perfil o creá uno nuevo</div>
     </div>
-    <div style="background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--radius);padding:20px;border:1px solid rgba(255,255,255,0.1)">
-      <div class="form-row" style="margin-bottom:14px">
-        <label style="color:var(--gray-400)">Nombre completo *</label>
-        <input type="text" id="ob-nombre" placeholder="Ej: Carlos Galeano" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
+    <div id="ob-users-list" style="margin-bottom:16px"></div>
+    <button onclick="obMostrarForm()" id="ob-btn-nuevo" style="width:100%;padding:14px;background:rgba(255,255,255,0.08);color:white;border:1.5px dashed rgba(255,255,255,0.25);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);margin-bottom:16px">+ Agregar nuevo usuario</button>
+    <div id="ob-form" style="display:none;background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--radius);padding:20px;border:1px solid rgba(255,255,255,0.12)">
+      <div style="color:white;font-size:14px;font-weight:600;margin-bottom:14px">Nuevo usuario</div>
+      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Nombre completo *</label><input type="text" id="ob-nombre" placeholder="Ej: Carlos Galeano" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
+      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Matrícula *</label><input type="text" id="ob-matricula" placeholder="Ej: 334497" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
+      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Celular</label><input type="tel" id="ob-celular" placeholder="Ej: 11 4445-2967" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
+      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Email corporativo</label><input type="email" id="ob-email" placeholder="nombre@verisure.com.ar" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
+      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Jefe / Coach</label><input type="text" id="ob-jefe" placeholder="Ej: Valentín Navarro" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
+      <div class="form-row" style="margin-bottom:16px"><label style="color:rgba(255,255,255,0.6)">Delegación</label><input type="text" id="ob-delegacion" placeholder="Ej: 353 — La Plata" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
+      <div style="display:flex;gap:8px">
+        <button onclick="obGuardarUsuario()" style="flex:1;padding:12px;background:var(--red);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)">Guardar y entrar</button>
+        <button onclick="obOcultarForm()" style="padding:12px 16px;background:rgba(255,255,255,0.1);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;cursor:pointer;font-family:var(--font)">Cancelar</button>
       </div>
-      <div class="form-row" style="margin-bottom:14px">
-        <label style="color:var(--gray-400)">Matrícula *</label>
-        <input type="text" id="ob-matricula" placeholder="Ej: 334497" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
-      </div>
-      <div class="form-row" style="margin-bottom:14px">
-        <label style="color:var(--gray-400)">Celular</label>
-        <input type="tel" id="ob-celular" placeholder="Ej: 11 4445-2967" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
-      </div>
-      <div class="form-row" style="margin-bottom:14px">
-        <label style="color:var(--gray-400)">Email corporativo</label>
-        <input type="email" id="ob-email" placeholder="nombre@verisure.com.ar" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
-      </div>
-      <div class="form-row" style="margin-bottom:14px">
-        <label style="color:var(--gray-400)">Jefe / Coach</label>
-        <input type="text" id="ob-jefe" placeholder="Ej: Valentín Navarro" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
-      </div>
-      <div class="form-row" style="margin-bottom:20px">
-        <label style="color:var(--gray-400)">Delegación</label>
-        <input type="text" id="ob-delegacion" placeholder="Ej: 353 — La Plata" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
-      </div>
-      <button onclick="guardarOnboarding()" style="width:100%;padding:14px;background:var(--red);color:white;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font)">
-        Empezar a usar el CRM →
-      </button>
-      <div id="ob-error" style="display:none;margin-top:10px;font-size:12px;color:#ff6b6b;text-align:center">Completá al menos tu nombre y matrícula</div>
+      <div id="ob-error" style="display:none;margin-top:10px;font-size:12px;color:#ff6b6b;text-align:center">Completá nombre y matrícula</div>
     </div>
-  </div>
-</div>
-
-<div class="header">
-  <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" class="header-logo-img" onclick="abrirPerfil()">
-  <div class="header-right">
-    <div class="header-experto" id="header-experto-name" onclick="abrirPerfil()">Carlos Galeano</div>
-    <div class="header-badge" id="header-mes">—</div>
   </div>
 </div>
 
@@ -292,7 +263,7 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 <div id="modal-perfil" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;align-items:center;justify-content:center">
   <div style="background:var(--white);border-radius:var(--radius);padding:24px;width:90%;max-width:400px;max-height:90vh;overflow-y:auto">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div style="font-size:15px;font-weight:600">Datos del experto</div>
+      <div style="font-size:15px;font-weight:600">Mis datos</div>
       <button onclick="cerrarPerfil()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--gray-400);line-height:1">×</button>
     </div>
     <div class="form-row"><label>Nombre completo *</label><input type="text" id="perfil-nombre" placeholder="Tu nombre"></div>
@@ -302,8 +273,16 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
     <div class="form-row"><label>Jefe / Coach</label><input type="text" id="perfil-jefe" placeholder="Valentín Navarro"></div>
     <div class="form-row"><label>Delegación</label><input type="text" id="perfil-delegacion" placeholder="353 — La Plata"></div>
     <button class="btn btn-primary" onclick="guardarPerfil()">Guardar cambios</button>
-    <button class="btn btn-secondary" style="margin-top:8px" onclick="resetearPerfil()">Cambiar de usuario</button>
+    <button class="btn btn-secondary" style="margin-top:8px" onclick="cambiarUsuario()">Cambiar de usuario</button>
     <div id="perfil-feedback" style="display:none;margin-top:10px" class="alert alert-success">✓ Datos guardados</div>
+  </div>
+</div>
+
+<div class="header">
+  <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" class="header-logo-img" onclick="abrirPerfil()">
+  <div class="header-right">
+    <div class="header-experto" id="header-experto-name" onclick="abrirPerfil()">—</div>
+    <div class="header-badge" id="header-mes">—</div>
   </div>
 </div>
 
@@ -374,8 +353,8 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
   <div class="card">
     <div class="card-title"><span class="dot"></span>Resumen</div>
     <div id="presupuesto-result"><div class="empty"><div class="empty-icon">📋</div>Completá los datos para ver el resumen</div></div>
-    <div id="kit-img-preview" style="display:none;text-align:center;margin-top:12px">
-      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/kit-presense.png" alt="Kit PreSense" style="max-width:100%;height:auto;max-height:160px;object-fit:contain;opacity:0.92">
+    <div id="kit-img-preview" style="display:none;text-align:center;margin:12px 0 4px">
+      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/kit-presense.png" alt="Kit PreSense" style="max-width:100%;height:auto;max-height:150px;object-fit:contain;border-radius:8px">
     </div>
     <div class="btn-row" style="margin-top:12px">
       <button class="btn btn-primary" onclick="calcPresupuesto()">Calcular</button>
@@ -805,6 +784,7 @@ let extraCount = 0, extraCountCom = 0;
 
 // ── UTILS ──
 function fmt(n){return '$'+Math.round(n).toLocaleString('es-AR');}
+function fmtIVA(base){const iva=base*0.21;return{base,iva,total:base+iva};}
 function fmtIVA(base){const iva=base*IVA;return{base,iva,total:base+iva};}
 
 function showModule(id,btn){
@@ -854,61 +834,6 @@ function checkExpressVisibility(){
     if(isRP){b.classList.remove('active');if(b.dataset.val==='No')b.classList.add('active');}
   });
   document.getElementById('express-sep').style.opacity=isRP?'0.4':'1';
-}
-
-
-// ── DEVICE IMAGE MAP ──
-const DEVICE_IMG_MAP = {
-  'Shock Sensor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png',
-  'Orion': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
-  'Orion (Close Pack)': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
-  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png',
-  'Arlo Indoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-indoor.png',
-  'Arlo Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png',
-  'Zerovision': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/zerovision.png',
-  'Botón emergencias': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/sos.png',
-  'Control remoto': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/mando.png',
-  'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png',
-  'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png',
-};
-
-const DEVICE_DESC = {
-  'Shock Sensor': 'Triple detección: apertura, golpes y vibraciones',
-  'Orion': 'Fotodetector de movimiento con ángulo 141°',
-  'Orion (Close Pack)': 'Orion en pack cerrado',
-  'Aquila Outdoor': 'Detector exterior de largo alcance',
-  'Arlo Indoor': 'Cámara interior con visión nocturna',
-  'Arlo Outdoor': 'Cámara exterior con panel solar',
-  'Zerovision': 'Barrera de humo activada por CRA',
-  'Botón emergencias': 'Alerta silenciosa a Central',
-  'Control remoto': 'Control de alarma + botón SOS',
-  'Panel de control': 'Panel de entrada con habla/escucha',
-  'Starkey': 'Pack de llaves inteligentes x3',
-};
-
-function onExtraChange(row) {
-  const sel = row.querySelector('select');
-  const disp = sel ? sel.value : '';
-  updateDevicePreview(row, disp);
-}
-
-function updateDevicePreview(row, disp) {
-  let preview = row.parentNode.querySelector('.device-img-preview');
-  if (!disp || !DEVICE_IMG_MAP[disp]) {
-    if (preview) preview.remove();
-    return;
-  }
-  if (!preview) {
-    preview = document.createElement('div');
-    preview.className = 'device-img-preview';
-    row.parentNode.insertBefore(preview, row.nextSibling);
-  }
-  preview.innerHTML = `
-    <img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'">
-    <div>
-      <div class="device-img-name">${disp}</div>
-      <div class="device-img-desc">${DEVICE_DESC[disp]||''}</div>
-    </div>`;
 }
 
 // ── EXTRAS ──
@@ -1008,6 +933,7 @@ function resetPresupuesto(){
   document.getElementById('presupuesto-result').innerHTML='<div class="empty"><div class="empty-icon">📋</div>Completá los datos para ver el resumen</div>';
   document.getElementById('card-msg-pres').style.display='none';
   document.getElementById('price-preview').style.display='none';
+  document.getElementById('kit-img-preview').style.display='none';
   ['tg-tipo','tg-precio','tg-upgrade','tg-express'].forEach(gid=>{
     const btns=document.querySelectorAll('#'+gid+' .toggle-btn');
     btns.forEach(b=>b.classList.remove('active'));
@@ -1044,7 +970,7 @@ function generarMsgPresupuesto(){
 ✅ App My Verisure incluida
 ✅ Instalación en el día, sin obras
 
-📲 ${perfil.nombre} — Experto en Seguridad Verisure\n☎️ ${perfil.celular} | 📧 ${perfil.email}`;
+📲 ${perfil?perfil.nombre:"Carlos Galeano"} — Experto en Seguridad Verisure\n☎️ ${perfil?perfil.celular:""} | 📧 ${perfil?perfil.email:""}`;
   document.getElementById('msg-presupuesto').textContent=msg;
   document.getElementById('card-msg-pres').style.display='block';
   document.getElementById('card-msg-pres').scrollIntoView({behavior:'smooth'});
@@ -1084,7 +1010,7 @@ Comisión extras: ${fmt(comExtras)}${extrasDetalle?extrasDetalle:'  —'}
 ────────────────────────────
 TOTAL COMISIÓN DIRECTA: ${fmt(total)}
 ${nota?nota:''}
-${perfil.nombre} | Verisure #${perfil.matricula}`;
+Carlos Galeano | Verisure #334497`;
 
   const html=`<div class="result-box">
     <div class="result-row"><span class="result-label">Comisión kit (${tipo}${upgrade==='Si'?' + Upgrade':''})</span><span class="result-value">${fmt(comKit)}</span></div>
@@ -1316,7 +1242,7 @@ function genMsgProspecto(i){
 🏢 Multi-instalación: ${p.multi}
 ${p.notas?'💬 '+p.notas:''}
 ⏰ ${p.hora}
-— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}`;
+— ${perfil?perfil.nombre:"Carlos Galeano"} | Verisure #${perfil?perfil.matricula:""}`;
   document.getElementById('msg-wa').value=msg;
   document.getElementById('wa-result-card').style.display='block';
   showModule('whatsapp',document.querySelector('.nav-tab:nth-child(5)'));
@@ -1337,7 +1263,7 @@ ${prospectosDia.map(p=>`  • ${p.nombre} — ${p.oferta}${p.precio?' ('+p.preci
 📅 Ventas en el mes: ${ventasMes.length} (${nRP} RP · ${nRE} RE)
 ✓ Checklist completado: ${checks}/4
 
-— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}`;
+— ${perfil?perfil.nombre:"Carlos Galeano"} | Verisure #${perfil?perfil.matricula:""}`;
   document.getElementById('msg-reporte').textContent=msg;
   document.getElementById('reporte-area').style.display='block';
 }
@@ -1364,7 +1290,7 @@ Recordá que con Verisure tenés:
 
 ¿Tenés alguna duda que pueda responderte? Estoy a tu disposición 🙌
 
-${perfil.nombre} — Experto en Seguridad Verisure\n📱 ${perfil.celular}`
+${perfil?perfil.nombre:"Carlos Galeano"} — Experto en Seguridad Verisure\n📱 ${perfil?perfil.celular:"11 4445-2967"}`
   },
   cierre:{
     id:'cierre',tipo:'predef',
@@ -1382,7 +1308,7 @@ No quiero que te quedes sin el beneficio que te ofrecí hoy.
 
 ¿Podemos confirmar para esta semana? 📅
 
-${perfil.nombre} — Verisure\n📱 ${perfil.celular}`
+${perfil?perfil.nombre:"Carlos Galeano"} — Verisure\n📱 ${perfil?perfil.celular:"11 4445-2967"}`
   },
   referido:{
     id:'referido',tipo:'predef',
@@ -1396,7 +1322,7 @@ No hay compromiso, solo una charla informativa de 10 minutos 😊
 
 ¿Se te ocurre alguien?
 
-${perfil.nombre} — Experto en Seguridad Verisure\n📱 ${perfil.celular}`
+${perfil?perfil.nombre:"Carlos Galeano"} — Experto en Seguridad Verisure\n📱 ${perfil?perfil.celular:"11 4445-2967"}`
   },
   multi:{
     id:'multi',tipo:'predef',
@@ -1412,7 +1338,7 @@ Sé que ya protegés tu hogar con nosotros — quería comentarte que también p
 
 ¿Coordinamos una visita esta semana?
 
-${perfil.nombre} — Verisure\n📱 ${perfil.celular}`
+${perfil?perfil.nombre:"Carlos Galeano"} — Verisure\n📱 ${perfil?perfil.celular:"11 4445-2967"}`
   },
   presentacion:{
     id:'presentacion',tipo:'predef',
@@ -1430,7 +1356,7 @@ Verisure es la alarma monitoreada N°1 del mundo:
 
 ¿Puedo contarte más? Sin compromiso, solo 10 min 📲
 
-${perfil.nombre} — Experto en Seguridad Verisure\n📱 ${perfil.celular} | 📧 ${perfil.email}`
+${perfil?perfil.nombre:"Carlos Galeano"} — Experto en Seguridad Verisure\n📱 ${perfil?perfil.celular:"11 4445-2967"} | 📧 carlos.galeano@verisure.com.ar`
   }
 };
 
@@ -1670,82 +1596,186 @@ function initWA(){
 }
 
 
-// ── PERFIL DEL EXPERTO ──
-let perfil = JSON.parse(localStorage.getItem('perfilExperto') || 'null') || {};
+// ── PRICE PREVIEW ──
+function updatePricePreview(){
+  const precio=getToggle('tg-precio');
+  const base=PRECIOS_KIT['Moonshot1'][precio];
+  if(!base){document.getElementById('price-preview').style.display='none';return;}
+  const iva=Math.round(base*0.21),total=base+iva;
+  document.getElementById('price-preview').style.display='block';
+  document.getElementById('price-preview-val').textContent=fmt(base);
+  document.getElementById('price-preview-iva').textContent='+ IVA '+fmt(iva)+' = '+fmt(total)+' c/IVA';
+}
+
+// ── EXPRESS VISIBILITY ──
+function checkExpressVisibility(){
+  const isRP=getToggle('tg-tipo')==='RP';
+  document.querySelectorAll('#tg-express .toggle-btn').forEach(b=>{
+    b.disabled=isRP;
+    if(isRP&&b.dataset.val==='Si'){b.classList.remove('active');document.querySelector('#tg-express .toggle-btn[data-val="No"]').classList.add('active');}
+  });
+}
+
+// ── RESET PRESUPUESTO ──
+function resetPresupuesto(){
+  document.getElementById('p-nombre').value='';
+  document.getElementById('p-celular').value='';
+  document.getElementById('p-direccion').value='';
+  document.getElementById('extras-list').innerHTML='';
+  document.getElementById('presupuesto-result').innerHTML='<div class="empty"><div class="empty-icon">📋</div>Completá los datos para ver el resumen</div>';
+  document.getElementById('kit-img-preview').style.display='none';
+  document.getElementById('price-preview').style.display='none';
+  document.getElementById('card-msg-pres').style.display='none';
+  ['tg-tipo','tg-precio','tg-upgrade','tg-express'].forEach(gid=>{
+    const btns=document.querySelectorAll('#'+gid+' .toggle-btn');
+    btns.forEach(b=>b.classList.remove('active'));
+    btns[0].classList.add('active');
+  });
+  extraCount=0;
+}
+
+// ── DEVICE IMAGE MAP ──
+const DEVICE_IMG_MAP = {
+  'Shock Sensor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png',
+  'Orion': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
+  'Orion (Close Pack)': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
+  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png',
+  'Arlo Indoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-indoor.png',
+  'Arlo Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png',
+  'Zerovision': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/zerovision.png',
+  'Botón emergencias': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/sos.png',
+  'Control remoto': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/mando.png',
+  'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png',
+  'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png',
+};
+const DEVICE_DESC = {
+  'Shock Sensor': 'Triple detección: apertura, golpes y vibraciones',
+  'Orion': 'Fotodetector de movimiento con ángulo 141°',
+  'Orion (Close Pack)': 'Orion a precio reducido',
+  'Aquila Outdoor': 'Detector exterior de largo alcance',
+  'Arlo Indoor': 'Cámara interior con visión nocturna',
+  'Arlo Outdoor': 'Cámara exterior con panel solar',
+  'Zerovision': 'Barrera de humo activada por CRA',
+  'Botón emergencias': 'Alerta silenciosa a Central',
+  'Control remoto': 'Control de alarma + botón SOS',
+  'Panel de control': 'Panel de entrada con habla/escucha',
+  'Starkey': 'Pack de llaves inteligentes x3',
+};
+function onExtraChange(row){
+  const sel=row.querySelector('select');
+  const disp=sel?sel.value:'';
+  let preview=row.parentNode.querySelector('.device-img-preview');
+  if(!disp||!DEVICE_IMG_MAP[disp]){if(preview)preview.remove();return;}
+  if(!preview){preview=document.createElement('div');preview.className='device-img-preview';row.after(preview);}
+  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
+}
+
+// ── SISTEMA DE USUARIOS ──
+let usuarios=JSON.parse(localStorage.getItem('verisureUsuarios')||'[]');
+let perfil=JSON.parse(localStorage.getItem('perfilActivo')||'null');
 
 function chequearOnboarding(){
-  if(!perfil.nombre || !perfil.matricula){
-    document.getElementById('onboarding').style.display = 'block';
-  }
+  if(!perfil||!perfil.nombre){mostrarOnboarding();}
 }
-
-function guardarOnboarding(){
-  const nombre = document.getElementById('ob-nombre').value.trim();
-  const matricula = document.getElementById('ob-matricula').value.trim();
-  if(!nombre || !matricula){
-    document.getElementById('ob-error').style.display = 'block';
-    return;
-  }
-  perfil = {
-    nombre,
-    matricula,
-    celular: document.getElementById('ob-celular').value.trim() || '',
-    email: document.getElementById('ob-email').value.trim() || '',
-    jefe: document.getElementById('ob-jefe').value.trim() || '',
-    delegacion: document.getElementById('ob-delegacion').value.trim() || ''
-  };
-  localStorage.setItem('perfilExperto', JSON.stringify(perfil));
-  document.getElementById('onboarding').style.display = 'none';
+function mostrarOnboarding(){
+  renderObUsers();
+  document.getElementById('onboarding').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function ocultarOnboarding(){
+  document.getElementById('onboarding').style.display='none';
+  document.body.style.overflow='';
+}
+function renderObUsers(){
+  const el=document.getElementById('ob-users-list');
+  if(!usuarios.length){el.innerHTML='';return;}
+  el.innerHTML=usuarios.map((u,i)=>`
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:background 0.15s" onclick="seleccionarUsuario(${i})" onmouseover="this.style.background='rgba(232,0,29,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:white;font-size:16px;font-weight:700;flex-shrink:0">${u.nombre.charAt(0).toUpperCase()}</div>
+      <div style="flex:1;min-width:0"><div style="color:white;font-size:14px;font-weight:600">${u.nombre}</div><div style="color:rgba(255,255,255,0.45);font-size:12px">#${u.matricula}${u.delegacion?' · '+u.delegacion:''}</div></div>
+      <div style="color:rgba(255,255,255,0.3);font-size:20px">›</div>
+    </div>`).join('')+
+    `<button onclick="gestionarUsuarios(event)" style="width:100%;padding:8px;background:transparent;color:rgba(255,255,255,0.3);border:none;font-size:11px;cursor:pointer;font-family:var(--font)">Eliminar un usuario</button>`;
+}
+function seleccionarUsuario(i){
+  perfil=usuarios[i];
+  localStorage.setItem('perfilActivo',JSON.stringify(perfil));
+  ocultarOnboarding();
   aplicarPerfil();
 }
-
+function gestionarUsuarios(e){
+  e.stopPropagation();
+  const nombre=prompt('Escribí el nombre exacto del usuario a eliminar:');
+  if(!nombre)return;
+  const idx=usuarios.findIndex(u=>u.nombre.toLowerCase()===nombre.toLowerCase());
+  if(idx===-1){alert('Usuario no encontrado');return;}
+  if(confirm(`¿Eliminar a ${usuarios[idx].nombre}?`)){
+    usuarios.splice(idx,1);
+    localStorage.setItem('verisureUsuarios',JSON.stringify(usuarios));
+    renderObUsers();
+  }
+}
+function obMostrarForm(){
+  document.getElementById('ob-form').style.display='block';
+  document.getElementById('ob-btn-nuevo').style.display='none';
+}
+function obOcultarForm(){
+  document.getElementById('ob-form').style.display='none';
+  document.getElementById('ob-btn-nuevo').style.display='block';
+  document.getElementById('ob-error').style.display='none';
+  ['ob-nombre','ob-matricula','ob-celular','ob-email','ob-jefe','ob-delegacion'].forEach(id=>document.getElementById(id).value='');
+}
+function obGuardarUsuario(){
+  const nombre=document.getElementById('ob-nombre').value.trim();
+  const matricula=document.getElementById('ob-matricula').value.trim();
+  if(!nombre||!matricula){document.getElementById('ob-error').style.display='block';return;}
+  const nuevo={nombre,matricula,celular:document.getElementById('ob-celular').value.trim(),email:document.getElementById('ob-email').value.trim(),jefe:document.getElementById('ob-jefe').value.trim(),delegacion:document.getElementById('ob-delegacion').value.trim()};
+  usuarios.push(nuevo);
+  localStorage.setItem('verisureUsuarios',JSON.stringify(usuarios));
+  perfil=nuevo;
+  localStorage.setItem('perfilActivo',JSON.stringify(perfil));
+  ocultarOnboarding();
+  aplicarPerfil();
+}
 function aplicarPerfil(){
-  document.getElementById('header-experto-name').textContent = perfil.nombre || '—';
+  if(!perfil)return;
+  document.getElementById('header-experto-name').textContent=perfil.nombre||'—';
 }
-
 function abrirPerfil(){
-  document.getElementById('perfil-nombre').value = perfil.nombre || '';
-  document.getElementById('perfil-matricula').value = perfil.matricula || '';
-  document.getElementById('perfil-celular').value = perfil.celular || '';
-  document.getElementById('perfil-email').value = perfil.email || '';
-  document.getElementById('perfil-jefe').value = perfil.jefe || '';
-  document.getElementById('perfil-delegacion').value = perfil.delegacion || '';
-  document.getElementById('modal-perfil').style.display = 'flex';
+  if(!perfil)return;
+  document.getElementById('perfil-nombre').value=perfil.nombre||'';
+  document.getElementById('perfil-matricula').value=perfil.matricula||'';
+  document.getElementById('perfil-celular').value=perfil.celular||'';
+  document.getElementById('perfil-email').value=perfil.email||'';
+  document.getElementById('perfil-jefe').value=perfil.jefe||'';
+  document.getElementById('perfil-delegacion').value=perfil.delegacion||'';
+  document.getElementById('modal-perfil').style.display='flex';
 }
-
 function cerrarPerfil(){
-  document.getElementById('modal-perfil').style.display = 'none';
-  document.getElementById('perfil-feedback').style.display = 'none';
+  document.getElementById('modal-perfil').style.display='none';
+  document.getElementById('perfil-feedback').style.display='none';
 }
-
 function guardarPerfil(){
-  const nombre = document.getElementById('perfil-nombre').value.trim();
-  const matricula = document.getElementById('perfil-matricula').value.trim();
-  if(!nombre || !matricula){ alert('Nombre y matrícula son obligatorios'); return; }
-  perfil = {
-    nombre,
-    matricula,
-    celular: document.getElementById('perfil-celular').value.trim(),
-    email: document.getElementById('perfil-email').value.trim(),
-    jefe: document.getElementById('perfil-jefe').value.trim(),
-    delegacion: document.getElementById('perfil-delegacion').value.trim()
-  };
-  localStorage.setItem('perfilExperto', JSON.stringify(perfil));
+  const nombre=document.getElementById('perfil-nombre').value.trim();
+  const matricula=document.getElementById('perfil-matricula').value.trim();
+  if(!nombre||!matricula){alert('Nombre y matrícula son obligatorios');return;}
+  const idx=usuarios.findIndex(u=>u.matricula===perfil.matricula);
+  perfil={nombre,matricula,celular:document.getElementById('perfil-celular').value.trim(),email:document.getElementById('perfil-email').value.trim(),jefe:document.getElementById('perfil-jefe').value.trim(),delegacion:document.getElementById('perfil-delegacion').value.trim()};
+  if(idx>=0)usuarios[idx]=perfil;
+  localStorage.setItem('verisureUsuarios',JSON.stringify(usuarios));
+  localStorage.setItem('perfilActivo',JSON.stringify(perfil));
   aplicarPerfil();
-  document.getElementById('perfil-feedback').style.display = 'flex';
-  setTimeout(cerrarPerfil, 1500);
+  document.getElementById('perfil-feedback').style.display='flex';
+  setTimeout(cerrarPerfil,1500);
 }
-
-function resetearPerfil(){
-  if(confirm('¿Cambiar de usuario? Se borrarán los datos del perfil actual (las ventas del mes se mantienen).')){
-    localStorage.removeItem('perfilExperto');
-    perfil = {};
-    document.getElementById('onboarding').style.display = 'block';
-  }
+function cambiarUsuario(){
+  perfil=null;
+  localStorage.removeItem('perfilActivo');
+  cerrarPerfil();
+  mostrarOnboarding();
 }
-
-document.getElementById('modal-perfil').addEventListener('click', function(e){
-  if(e.target === this) cerrarPerfil();
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('modal-perfil').addEventListener('click',function(e){if(e.target===this)cerrarPerfil();});
 });
 
 // ── INIT ──
