@@ -439,6 +439,39 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 <!-- ====== MÓDULO 1: PRESUPUESTO ====== -->
 <div id="mod-presupuesto" class="module active">
 
+
+  <!-- KIT ESENCIAL -->
+  <div class="card" style="border-left:3px solid var(--red);cursor:pointer" onclick="this.querySelector('.kit-body').style.display=this.querySelector('.kit-body').style.display==='none'?'block':'none'">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div class="card-title" style="margin-bottom:0"><span class="dot"></span>Kit esencial incluido siempre</div>
+      <span style="color:var(--gray-400);font-size:12px">Ver ▾</span>
+    </div>
+    <div class="kit-body" style="display:none;margin-top:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--gray-100);border-radius:8px;padding:8px 10px">
+          <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png?v=2" style="width:36px;height:36px;object-fit:contain">
+          <div><div style="font-size:12px;font-weight:600">Panel (SVK)</div><div style="font-size:11px;color:var(--gray-400)">x1</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:var(--gray-100);border-radius:8px;padding:8px 10px">
+          <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png?v=2" style="width:36px;height:36px;object-fit:contain">
+          <div><div style="font-size:12px;font-weight:600">Starkeys</div><div style="font-size:11px;color:var(--gray-400)">x3</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:var(--gray-100);border-radius:8px;padding:8px 10px">
+          <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png?v=2" style="width:36px;height:36px;object-fit:contain">
+          <div><div style="font-size:12px;font-weight:600">ShockSensor</div><div style="font-size:11px;color:var(--gray-400)">x1</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:var(--gray-100);border-radius:8px;padding:8px 10px">
+          <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png?v=2" style="width:36px;height:36px;object-fit:contain">
+          <div><div style="font-size:12px;font-weight:600">Orion</div><div style="font-size:11px;color:var(--gray-400)">x1</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:var(--gray-100);border-radius:8px;padding:8px 10px;grid-column:1/-1">
+          <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png?v=2" style="width:36px;height:36px;object-fit:contain">
+          <div><div style="font-size:12px;font-weight:600">Unidad Central (CU)</div><div style="font-size:11px;color:var(--gray-400)">x1 — oculta</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-title"><span class="dot"></span>Datos del cliente</div>
     <div class="form-grid">
@@ -530,6 +563,31 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
     </div>
   </div>
 
+
+  <!-- COMPARADOR DE PRECIOS -->
+  <div class="card">
+    <div class="card-title" style="justify-content:space-between">
+      <span style="display:flex;align-items:center;gap:6px"><span class="dot"></span>Comparador rápido</span>
+      <div style="display:flex;gap:6px">
+        <button class="toggle-btn active btn-sm" id="comp-tipo-re" onclick="setCompTipo('RE')" style="padding:5px 12px;font-size:12px">RE</button>
+        <button class="toggle-btn btn-sm" id="comp-tipo-rp" onclick="setCompTipo('RP')" style="padding:5px 12px;font-size:12px">RP</button>
+      </div>
+    </div>
+    <div id="comparador-tabla" style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:var(--gray-100)">
+            <th style="padding:8px;text-align:left;font-weight:600;color:var(--gray-600)">Precio</th>
+            <th style="padding:8px;text-align:right;font-weight:600;color:var(--gray-600)">Instalación c/IVA</th>
+            <th style="padding:8px;text-align:right;font-weight:600;color:var(--gray-600)">Cuota c/IVA</th>
+            <th style="padding:8px;text-align:right;font-weight:600;color:var(--red)">Comisión</th>
+          </tr>
+        </thead>
+        <tbody id="comp-body"></tbody>
+      </table>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-title"><span class="dot"></span>Extras</div>
     <div class="extras-list" id="extras-list"></div>
@@ -554,6 +612,17 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
     <div class="copy-area">
       <div class="msg-box" id="msg-presupuesto"></div>
       <button class="btn-copy" onclick="copyText('msg-presupuesto')">Copiar</button>
+    </div>
+  </div>
+
+  <!-- HISTORIAL PRESUPUESTOS -->
+  <div class="card" id="card-historial">
+    <div class="card-title" style="justify-content:space-between">
+      <span style="display:flex;align-items:center;gap:6px"><span class="dot"></span>Historial de presupuestos</span>
+      <button onclick="limpiarHistorial()" style="background:none;border:none;font-size:11px;color:var(--gray-400);cursor:pointer;font-family:var(--font)">Limpiar</button>
+    </div>
+    <div id="historial-lista">
+      <div class="empty" style="padding:16px 0"><div class="empty-icon" style="font-size:20px">📋</div>Los presupuestos calculados aparecen acá</div>
     </div>
   </div>
 
@@ -608,6 +677,16 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 <!-- ====== MÓDULO 3: MI MES ====== -->
 <div id="mod-mimes" class="module">
 
+  
+  <!-- BANNER PRÓXIMO BONO -->
+  <div id="banner-bono" style="display:none;background:linear-gradient(135deg,#E8001D,#B50016);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+    <div style="font-size:24px;flex-shrink:0">🎯</div>
+    <div>
+      <div id="banner-bono-title" style="color:white;font-size:13px;font-weight:700;margin-bottom:2px"></div>
+      <div id="banner-bono-sub" style="color:rgba(255,255,255,0.75);font-size:12px"></div>
+    </div>
+  </div>
+
   <div class="total-bar">
     <div>
       <div class="total-bar-label">Comisión estimada del mes</div>
@@ -626,6 +705,17 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
       <div class="progress-header"><span class="progress-label">RE (empresa)</span><span class="progress-count" id="prog-re-txt">0 / 6</span></div>
       <div class="progress-bar-bg"><div class="progress-bar" id="prog-re" style="width:0%"></div></div>
     </div>
+
+      <div class="progress-section" style="margin-top:12px">
+        <div class="progress-header">
+          <span class="progress-label">Prospectos generados</span>
+          <span class="progress-count" id="prog-prosp-txt">0</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button onclick="cambiarProspMes(-1)" style="width:32px;height:32px;border-radius:6px;border:1.5px solid var(--gray-200);background:var(--white);cursor:pointer;font-size:16px;font-family:var(--font)">−</button>
+          <button onclick="cambiarProspMes(1)" style="flex:1;padding:6px;border-radius:6px;background:var(--red);color:white;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--font)">+ Prospecto del mes</button>
+        </div>
+      </div>
     <div class="progress-section" style="margin-top:12px">
       <div class="progress-header"><span class="progress-label">Ventas totales</span><span class="progress-count" id="prog-total-txt">0 / 11</span></div>
       <div class="progress-bar-bg"><div class="progress-bar" id="prog-total" style="width:0%"></div></div>
@@ -951,6 +1041,24 @@ const COM_EXTRAS = {
   'Starkey':{'Alto':[20000],'Medio':[8000]},
   'Placa disuasoria':{'Alto':[0],'Bajo':[0]}
 };
+
+// Precios de venta al cliente por extra (sin IVA)
+// Columnas: [x1, x2, x3, x4, null, x6]
+const PRECIOS_EXTRAS_VENTA = {
+  'Shock Sensor':    {'Alto':[59999,79999,99999,129999,null,189999], 'Bajo':[39999,59999,79999,99999,null,149999]},
+  'Orion':           {'Alto':[169999,319999], 'Bajo':[99999,219999]},
+  'Orion (Close Pack)': {'Alto':[69999], 'Bajo':[49999]},
+  'Aquila Outdoor':  {'Alto':[299999,499999], 'Bajo':[216999,449999]},
+  'Arlo Indoor':     {'Alto':[149999,299998], 'Bajo':[110999,221998]},
+  'Arlo Outdoor':    {'Alto':[179999,359998], 'Bajo':[119999,239998]},
+  'Zerovision':      {'Alto':[349999], 'Bajo':[141999]},
+  'Botón emergencias':{'Alto':[59999,119999], 'Bajo':[39999,79999]},
+  'Control remoto':  {'Alto':[59999,119999], 'Bajo':[39999,79999]},
+  'Panel de control':{'Alto':[169999], 'Bajo':[99999]},
+  'Starkey':         {'Alto':[49999], 'Bajo':[19999]},
+  'Placa disuasoria':{'Alto':[0], 'Bajo':[0]},
+};
+
 const COM_KIT = {
   'Kit':{'RE':{'Catálogo':140000,'Alto':70000,'Medio':35000,'Bajo':0},'RP':{'Catálogo':200000,'Alto':100000,'Medio':50000,'Bajo':0}},
   'Upgrade':{'RE':{'Catálogo':175000,'Alto':140000,'Medio':56000,'Bajo':56000},'RP':{'Catálogo':250000,'Alto':200000,'Medio':80000,'Bajo':80000}}
@@ -1058,6 +1166,38 @@ function removeExtraRow(rowId){
   if(next&&next.classList.contains('device-img-preview'))next.remove();
   row.remove();
 }
+
+function getExtrasPrecioVenta(listId){
+  let total = 0;
+  document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+    if(isBonificado(row)) return; // bonificado = $0 instalación
+    const sels = row.querySelectorAll('select');
+    const disp = sels[0].value, cantStr = sels[1].value, nivel = sels[2].value;
+    const cantNum = parseInt(cantStr.replace('x',''));
+    const data = PRECIOS_EXTRAS_VENTA[disp]; if(!data) return;
+    const precios = data[nivel] || data['Alto'] || data['Bajo'] || [];
+    const idx = [1,2,3,4,null,6].indexOf(cantNum);
+    if(idx >= 0 && precios[idx]) total += precios[idx];
+  });
+  return total;
+}
+
+function getExtrasDescVenta(listId){
+  const items = [];
+  document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+    const sels = row.querySelectorAll('select');
+    const disp = sels[0].value, cantStr = sels[1].value, nivel = sels[2].value;
+    const cantNum = parseInt(cantStr.replace('x',''));
+    const bonif = isBonificado(row);
+    const data = PRECIOS_EXTRAS_VENTA[disp];
+    const precios = data ? (data[nivel]||data['Alto']||data['Bajo']||[]) : [];
+    const idx = [1,2,3,4,null,6].indexOf(cantNum);
+    const precio = (!bonif && idx>=0 && precios[idx]) ? precios[idx] : 0;
+    items.push({disp, cantStr, nivel, precio, bonif});
+  });
+  return items;
+}
+
 function getExtrasComision(listId){
   let total=0;
   document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
@@ -1093,56 +1233,89 @@ function getExtrasDesc(listId){
 // ── MÓDULO 1: PRESUPUESTO ──
 function calcPresupuesto(){
   const tipo=getToggle('tg-tipo'),precio=getToggle('tg-precio'),upgrade=getToggle('tg-upgrade'),express=getToggle('tg-express');
-  // Si hay promo activa, usar precio de promo
-  const baseKit=promoActiva ? promoActiva.precio : (PRECIOS_KIT['Moonshot1'][precio]||0);
+  const baseKit = promoActiva ? promoActiva.precio : (PRECIOS_KIT['Moonshot1'][precio]||0);
   const esPromo = !!promoActiva;
   const cuotas = parseInt(document.getElementById('sel-cuotas')?.value||6);
-  const baseUp=upgrade==='Si'?(PRECIOS_KIT['Upgrade'][precio]||PRECIOS_KIT['Upgrade']['Medio']):0;
-  const cuotaExtras=getExtrasCuota('extras-list');
-  const cuotaBase=CUOTA_BASE+(upgrade==='Si'?CUOTA_UPGRADE:0)+cuotaExtras;
+  const baseUp = upgrade==='Si' ? (PRECIOS_KIT['Upgrade'][precio]||PRECIOS_KIT['Upgrade']['Medio']) : 0;
 
-  const ivaKit=fmtIVA(baseKit),ivaUp=fmtIVA(baseUp),ivaCuota=fmtIVA(cuotaBase);
+  // Extras — precio de venta al cliente y cuota mensual
+  const precioExtras = getExtrasPrecioVenta('extras-list');
+  const cuotaExtras = getExtrasCuota('extras-list');
+  const extrasDesc = getExtrasDescVenta('extras-list');
 
-  let comKit=0,nota='';
+  // Total instalación cliente (sin IVA)
+  const totalInstalSinIVA = baseKit + baseUp + precioExtras;
+  const ivaInstal = fmtIVA(totalInstalSinIVA);
+
+  // Cuota mensual (sin IVA)
+  const cuotaBase = CUOTA_BASE + (upgrade==='Si'?CUOTA_UPGRADE:0) + cuotaExtras;
+  const ivaCuota = fmtIVA(cuotaBase);
+
+  // Cuota por cuotas de instalación (sobre el total con IVA)
+  const cuotaInstalacion = Math.ceil(ivaInstal.total / cuotas);
+
+  // Comisiones
+  let comKit=0, nota='';
   if(esPromo){
     comKit=0; nota='ℹ️ Promo activa — comisión de kit $0. Sumás extras y bono de ventas.';
   } else if(tipo==='RE'||tipo==='RP'){
     const tabla=upgrade==='Si'?COM_KIT['Upgrade']:COM_KIT['Kit'];
     if(['Catálogo','Alto','Medio','Bajo'].includes(precio))comKit=tabla[tipo][precio]||0;
     if(precio==='Bajo'&&upgrade==='No')nota='⚠️ Precio Bajo sin upgrade no genera comisión de kit';
-  }else if(tipo==='Jefe'){nota='⚠️ Venta a precio Jefe — queda a nombre de tu jefe';}
+  } else if(tipo==='Jefe'){nota='⚠️ Venta a precio Jefe — queda a nombre de tu jefe';}
   else if(tipo==='Gerente'){nota='⚠️ Venta a precio Gerente — queda a nombre del gerente';}
-  const comExtras=getExtrasComision('extras-list');
-  const totalCom=comKit+comExtras;
+  const comExtras = getExtrasComision('extras-list');
+  const totalCom = comKit + comExtras;
 
-  let html=`<div class="result-box">
-    <div class="result-row"><span class="result-label">Kit Moonshot 1 (${precio})</span><span class="result-value">${fmt(baseKit)}</span></div>
-    <div class="result-row iva-row"><span class="result-label" style="font-size:11px">+ IVA 21%</span><span class="result-value" style="font-size:11px">${fmt(ivaKit.iva)}</span></div>
-    <div class="result-row result-subtotal"><span class="result-label">Kit c/IVA</span><span class="result-value">${fmt(ivaKit.total)}</span></div>`;
+  // ── HTML RESULTADO ──
+  let html = `<div class="result-box">`;
 
+  // Kit
+  html += `<div class="result-row"><span class="result-label">Kit Moonshot 1${esPromo?' 🏷️':''} (${esPromo?promoActiva.nombre:precio})</span><span class="result-value">${fmt(baseKit)}</span></div>`;
+
+  // Upgrade
   if(upgrade==='Si'){
-    html+=`<div class="result-row" style="margin-top:8px"><span class="result-label">Upgrade 1</span><span class="result-value">${fmt(baseUp)}</span></div>
-    <div class="result-row iva-row"><span class="result-label" style="font-size:11px">+ IVA 21%</span><span class="result-value" style="font-size:11px">${fmt(ivaUp.iva)}</span></div>
-    <div class="result-row result-subtotal"><span class="result-label">Upgrade c/IVA</span><span class="result-value">${fmt(ivaUp.total)}</span></div>`;
+    html += `<div class="result-row"><span class="result-label">Upgrade 1</span><span class="result-value">${fmt(baseUp)}</span></div>`;
   }
 
-  const cuotaInstalacion=Math.ceil(baseKit/cuotas);
-  html+=`<div class="divider" style="margin:8px 0"></div>
-    <div class="result-row"><span class="result-label">Instalación en cuotas</span><span class="result-value" style="font-size:12px">${cuotas>1?cuotas+'x '+fmt(cuotaInstalacion)+' s/i':'Pago único '+fmt(baseKit)}</span></div>
-    <div class="result-row"><span class="result-label">Cuota base s/IVA</span><span class="result-value">${fmt(CUOTA_BASE)}/mes</span></div>`;
-  if(upgrade==='Si')html+=`<div class="result-row"><span class="result-label">+ Cuota upgrade</span><span class="result-value">${fmt(CUOTA_UPGRADE)}/mes</span></div>`;
-  if(cuotaExtras>0)html+=`<div class="result-row"><span class="result-label">+ Cuota extras</span><span class="result-value">${fmt(cuotaExtras)}/mes</span></div>`;
-  html+=`<div class="result-row iva-row"><span class="result-label" style="font-size:11px">+ IVA 21% cuota</span><span class="result-value" style="font-size:11px">${fmt(ivaCuota.iva)}/mes</span></div>
-    <div class="result-row result-subtotal"><span class="result-label">Cuota total c/IVA</span><span class="result-value">${fmt(ivaCuota.total)}/mes</span></div>
-    <div class="divider" style="margin:8px 0"></div>
-    ${esPromo?`<div class="result-row" style="margin-bottom:4px"><span class="result-label" style="color:var(--green);font-weight:600">🏷️ ${promoActiva.nombre}</span><span class="result-value" style="color:var(--green);font-size:12px">${promoActiva.cuotas} cuotas</span></div>`:''}
-    <div class="result-row result-total"><span class="result-label">Tu comisión</span><span class="result-value">${fmt(totalCom)}</span></div>
-    ${nota?`<div style="margin-top:8px;font-size:12px;color:${esPromo?'var(--blue)':'var(--amber)'}">${nota}</div>`:''}
-    ${express==='Si'&&tipo==='RE'?'<div style="margin-top:6px;font-size:12px;color:var(--green)">✓ Express — suma al bono del mes</div>':''}
-    ${express==='Si'&&tipo==='RP'?'<div style="margin-top:6px;font-size:12px;color:var(--amber)">⚠️ Express solo aplica a visitas RE</div>':''}
-  </div>`;
-  document.getElementById('presupuesto-result').innerHTML=html;
-  document.getElementById('kit-img-preview').style.display='block';
+  // Extras con precio
+  if(extrasDesc.length > 0){
+    extrasDesc.forEach(e=>{
+      html += `<div class="result-row"><span class="result-label">${e.cantStr} ${e.disp}${e.bonif?' <span style="color:var(--green);font-size:11px">bonificado</span>':''}</span><span class="result-value">${e.bonif?'$0':fmt(e.precio)}</span></div>`;
+    });
+  }
+
+  // Total instalación + IVA
+  html += `<div style="height:1px;background:rgba(232,0,29,0.15);margin:6px 0"></div>`;
+  html += `<div class="result-row"><span class="result-label" style="font-size:11px;color:var(--gray-400)">Subtotal s/IVA</span><span class="result-value" style="font-size:11px;color:var(--gray-400)">${fmt(totalInstalSinIVA)}</span></div>`;
+  html += `<div class="result-row"><span class="result-label" style="font-size:11px;color:var(--gray-400)">+ IVA 21%</span><span class="result-value" style="font-size:11px;color:var(--gray-400)">${fmt(ivaInstal.iva)}</span></div>`;
+  html += `<div class="result-row result-subtotal"><span class="result-label" style="font-weight:700">Total instalación c/IVA</span><span class="result-value" style="font-size:16px;font-weight:700;color:var(--red)">${fmt(ivaInstal.total)}</span></div>`;
+
+  // Cuotas de instalación
+  if(cuotas > 1){
+    html += `<div class="result-row"><span class="result-label">En ${cuotas} cuotas s/i</span><span class="result-value" style="color:var(--red);font-weight:600">${fmt(cuotaInstalacion)}/cuota</span></div>`;
+  }
+
+  // Cuota mensual
+  html += `<div style="height:1px;background:rgba(232,0,29,0.15);margin:6px 0"></div>`;
+  html += `<div class="result-row"><span class="result-label" style="font-size:11px;color:var(--gray-400)">Cuota mensual s/IVA</span><span class="result-value" style="font-size:11px;color:var(--gray-400)">${fmt(cuotaBase)}/mes</span></div>`;
+  html += `<div class="result-row"><span class="result-label" style="font-size:11px;color:var(--gray-400)">+ IVA 21%</span><span class="result-value" style="font-size:11px;color:var(--gray-400)">${fmt(ivaCuota.iva)}/mes</span></div>`;
+  html += `<div class="result-row result-subtotal"><span class="result-label" style="font-weight:700">Cuota mensual c/IVA</span><span class="result-value" style="font-size:16px;font-weight:700;color:var(--red)">${fmt(ivaCuota.total)}/mes</span></div>`;
+
+  // Comisión + notas
+  html += `<div style="height:1px;background:rgba(232,0,29,0.15);margin:6px 0"></div>`;
+  html += `<div class="result-row result-total"><span class="result-label">Tu comisión directa</span><span class="result-value">${fmt(totalCom)}</span></div>`;
+  if(nota) html += `<div style="margin-top:8px;font-size:12px;color:${esPromo?'#2563EB':'var(--amber)'}">${nota}</div>`;
+  if(express==='Si'&&tipo==='RE') html += `<div style="margin-top:6px;font-size:12px;color:var(--green)">✓ Express — suma al bono del mes</div>`;
+  if(express==='Si'&&tipo==='RP') html += `<div style="margin-top:6px;font-size:12px;color:var(--amber)">⚠️ Express solo aplica a visitas RE</div>`;
+
+  html += `</div>`;
+  document.getElementById('presupuesto-result').innerHTML = html;
+  document.getElementById('kit-img-preview').style.display = 'block';
+  // Guardar en historial
+  var clienteNombre = document.getElementById('p-nombre')?.value || 'Sin nombre';
+  var resumenLabel = (esPromo ? promoActiva.nombre : precio) + (upgrade==='Si'?' + Upgrade':'') + (extrasDesc.length?' + '+extrasDesc.length+' extras':'');
+  guardarEnHistorial({cliente: clienteNombre, total: ivaInstal.total, cuota: ivaCuota.total, resumen: resumenLabel});
 }
 
 function resetPresupuesto(){
@@ -1330,6 +1503,10 @@ function updateMes(){
   bi.className='bono-chip'+(bonos.bonoInst>0?' earned':'');
   bi.innerHTML=`<div class="bono-chip-label">Instalación</div><div class="bono-chip-value">${fmt(bonos.bonoInst)}</div><div class="bono-chip-sub">${bonos.totalRPInst} RP + ${bonos.totalJefeInst} GTE/Jefe</div>`;
   document.getElementById('bono-usd-alert').style.display=bonos.perfEarned?'flex':'none';
+  actualizarBannerBono(bonos);
+  // Actualizar contador prospectos
+  var pp = document.getElementById('prog-prosp-txt');
+  if(pp) pp.textContent = prospMes;
 
   // XVEN list
   const xvEl=document.getElementById('xven-list');
@@ -2176,6 +2353,9 @@ function guardarPromos(){
   }
   localStorage.setItem('vcrm_promos', JSON.stringify(promos));
   renderPromoOpciones();
+  renderComparador();
+  renderHistorial();
+  cambiarProspMes(0);
   document.getElementById('promos-feedback').style.display = 'flex';
   setTimeout(cerrarEditarPromo, 1500);
 }
@@ -2184,6 +2364,9 @@ function resetPromos(){
   if(confirm('¿Restaurar las promos por defecto?')){
     localStorage.removeItem('vcrm_promos');
     renderPromoOpciones();
+  renderComparador();
+  renderHistorial();
+  cambiarProspMes(0);
     cerrarEditarPromo();
   }
 }
@@ -2193,6 +2376,134 @@ document.addEventListener('DOMContentLoaded', function(){
   var mp = document.getElementById('modal-promos');
   if(mp) mp.addEventListener('click', function(e){ if(e.target===this) cerrarEditarPromo(); });
 });
+
+
+// ── MEJORA 1: Banner próximo bono ──
+function actualizarBannerBono(bonos) {
+  var banner = document.getElementById('banner-bono');
+  var title = document.getElementById('banner-bono-title');
+  var sub = document.getElementById('banner-bono-sub');
+  if(!banner) return;
+
+  // Próximo hito de performance
+  var nextPerf = null;
+  for(var i=0; i<ESCALAS_PERF.length; i++){
+    if(bonos.totalV < ESCALAS_PERF[i].min){
+      nextPerf = ESCALAS_PERF[i];
+      break;
+    }
+  }
+  // Próximo hito de RP
+  var nextRP = null;
+  for(var i=0; i<ESCALAS_RP_BONO.length; i++){
+    if(bonos.totalRP < ESCALAS_RP_BONO[i].min){
+      nextRP = ESCALAS_RP_BONO[i];
+      break;
+    }
+  }
+
+  if(!nextPerf && !nextRP){
+    banner.style.display = 'flex';
+    title.textContent = '🏆 Todos los bonos alcanzados — ¡Excelente mes!';
+    sub.textContent = 'Cada venta extra suma ' + fmt(80000) + ' y cada RP extra ' + fmt(100000);
+    return;
+  }
+
+  // Mostrar el bono más cercano
+  var msgs = [];
+  if(nextPerf){
+    var falta = nextPerf.min - bonos.totalV;
+    msgs.push('Te faltan ' + falta + ' venta' + (falta>1?'s':'') + ' para ganar ' + fmt(nextPerf.bono) + ' de Performance');
+  }
+  if(nextRP){
+    var faltaRP = nextRP.min - bonos.totalRP;
+    msgs.push('Te faltan ' + faltaRP + ' RP para ganar ' + fmt(nextRP.bono) + ' de bono RP');
+  }
+
+  banner.style.display = 'flex';
+  title.textContent = msgs[0];
+  sub.textContent = msgs.length > 1 ? msgs[1] : '';
+}
+
+// ── MEJORA 3: Comparador de precios ──
+var compTipo = 'RE';
+function setCompTipo(tipo){
+  compTipo = tipo;
+  document.getElementById('comp-tipo-re').classList.toggle('active', tipo==='RE');
+  document.getElementById('comp-tipo-rp').classList.toggle('active', tipo==='RP');
+  renderComparador();
+}
+function renderComparador(){
+  var body = document.getElementById('comp-body');
+  if(!body) return;
+  var precios = ['Catálogo','Alto','Medio','Bajo'];
+  var rows = precios.map(function(p){
+    var base = PRECIOS_KIT['Moonshot1'][p] || 0;
+    var total = Math.round(base * 1.21);
+    var cuota = Math.round((CUOTA_BASE) * 1.21);
+    var com = (compTipo==='RE' ? COM_KIT['Kit']['RE'][p] : COM_KIT['Kit']['RP'][p]) || 0;
+    var isBest = p === 'Catálogo';
+    return '<tr style="border-bottom:1px solid var(--gray-100)' + (isBest?';background:var(--red-bg)':'') + '">'
+      + '<td style="padding:8px;font-weight:' + (isBest?'700':'400') + ';color:var(--black)">' + p + '</td>'
+      + '<td style="padding:8px;text-align:right;font-family:var(--mono);font-size:12px">' + fmt(total) + '</td>'
+      + '<td style="padding:8px;text-align:right;font-family:var(--mono);font-size:12px">' + fmt(cuota) + '/mes</td>'
+      + '<td style="padding:8px;text-align:right;font-family:var(--mono);font-size:12px;color:var(--red);font-weight:600">' + fmt(com) + '</td>'
+      + '</tr>';
+  }).join('');
+  body.innerHTML = rows;
+}
+
+// ── MEJORA 4: Historial de presupuestos ──
+var historialPres = JSON.parse(localStorage.getItem('vcrm_historial') || '[]');
+
+function guardarEnHistorial(data){
+  historialPres.unshift({
+    fecha: new Date().toLocaleString('es-AR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),
+    cliente: data.cliente || 'Sin nombre',
+    total: data.total,
+    cuota: data.cuota,
+    resumen: data.resumen
+  });
+  if(historialPres.length > 10) historialPres.pop();
+  localStorage.setItem('vcrm_historial', JSON.stringify(historialPres));
+  renderHistorial();
+}
+
+function renderHistorial(){
+  var el = document.getElementById('historial-lista');
+  if(!el) return;
+  if(!historialPres.length){
+    el.innerHTML = '<div class="empty" style="padding:16px 0"><div class="empty-icon" style="font-size:20px">📋</div>Los presupuestos calculados aparecen acá</div>';
+    return;
+  }
+  el.innerHTML = historialPres.map(function(h, i){
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--gray-100)">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+      + '<div><div style="font-size:13px;font-weight:600">' + h.cliente + '</div>'
+      + '<div style="font-size:11px;color:var(--gray-400)">' + h.fecha + ' · ' + h.resumen + '</div></div>'
+      + '<div style="text-align:right;flex-shrink:0;margin-left:8px">'
+      + '<div style="font-family:var(--mono);font-size:13px;font-weight:600;color:var(--red)">' + fmt(h.total) + '</div>'
+      + '<div style="font-size:11px;color:var(--gray-400)">' + fmt(h.cuota) + '/mes</div></div></div>'
+      + '</div>';
+  }).join('');
+}
+
+function limpiarHistorial(){
+  if(confirm('¿Limpiar el historial de presupuestos?')){
+    historialPres = [];
+    localStorage.setItem('vcrm_historial', JSON.stringify(historialPres));
+    renderHistorial();
+  }
+}
+
+// ── MEJORA 5: Prospectos del mes ──
+var prospMes = parseInt(localStorage.getItem('vcrm_prosp_mes') || '0');
+
+function cambiarProspMes(delta){
+  prospMes = Math.max(0, prospMes + delta);
+  localStorage.setItem('vcrm_prosp_mes', prospMes);
+  document.getElementById('prog-prosp-txt').textContent = prospMes;
+}
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function() {
@@ -2204,6 +2515,9 @@ document.addEventListener('DOMContentLoaded', function() {
   aplicarPerfil();
   chequearOnboarding();
   renderPromoOpciones();
+  renderComparador();
+  renderHistorial();
+  cambiarProspMes(0);
 });
 </script>
 </body>
