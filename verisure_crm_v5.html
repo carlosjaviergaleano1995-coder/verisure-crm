@@ -1079,7 +1079,7 @@ Comisión extras: ${fmt(comExtras)}${extrasDetalle?extrasDetalle:'  —'}
 ────────────────────────────
 TOTAL COMISIÓN DIRECTA: ${fmt(total)}
 ${nota?nota:''}
-Carlos Galeano | Verisure #334497`;
+${perfil.nombre} | Verisure #${perfil.matricula}`;
 
   const html=`<div class="result-box">
     <div class="result-row"><span class="result-label">Comisión kit (${tipo}${upgrade==='Si'?' + Upgrade':''})</span><span class="result-value">${fmt(comKit)}</span></div>
@@ -1311,7 +1311,7 @@ function genMsgProspecto(i){
 🏢 Multi-instalación: ${p.multi}
 ${p.notas?'💬 '+p.notas:''}
 ⏰ ${p.hora}
-— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}\`;
+— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}`;
   document.getElementById('msg-wa').value=msg;
   document.getElementById('wa-result-card').style.display='block';
   showModule('whatsapp',document.querySelector('.nav-tab:nth-child(5)'));
@@ -1332,7 +1332,7 @@ ${prospectosDia.map(p=>`  • ${p.nombre} — ${p.oferta}${p.precio?' ('+p.preci
 📅 Ventas en el mes: ${ventasMes.length} (${nRP} RP · ${nRE} RE)
 ✓ Checklist completado: ${checks}/4
 
-— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}\`;
+— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}`;
   document.getElementById('msg-reporte').textContent=msg;
   document.getElementById('reporte-area').style.display='block';
 }
@@ -1425,7 +1425,7 @@ Verisure es la alarma monitoreada N°1 del mundo:
 
 ¿Puedo contarte más? Sin compromiso, solo 10 min 📲
 
-${perfil.nombre} — Experto en Seguridad Verisure\n📱 ${perfil.celular} | 📧 carlos.galeano@verisure.com.ar`
+${perfil.nombre} — Experto en Seguridad Verisure\n📱 ${perfil.celular} | 📧 ${perfil.email}`
   }
 };
 
