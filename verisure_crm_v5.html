@@ -237,6 +237,48 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 </head>
 <body>
 
+
+<!-- ====== ONBOARDING / SETUP ====== -->
+<div id="onboarding" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--black);z-index:2000;overflow-y:auto">
+  <div style="max-width:420px;margin:0 auto;padding:40px 24px 60px">
+    <div style="text-align:center;margin-bottom:32px">
+      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:80px;object-fit:contain;filter:brightness(0) invert(1);margin-bottom:20px">
+      <div style="color:var(--white);font-size:22px;font-weight:600;margin-bottom:8px">Bienvenido al CRM</div>
+      <div style="color:var(--gray-400);font-size:14px;line-height:1.5">Completá tus datos para personalizar la herramienta. Podés editarlos en cualquier momento.</div>
+    </div>
+    <div style="background:var(--gray-900);border-radius:var(--radius);padding:20px">
+      <div class="form-row" style="margin-bottom:14px">
+        <label style="color:var(--gray-400)">Nombre completo *</label>
+        <input type="text" id="ob-nombre" placeholder="Ej: Carlos Galeano" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
+      </div>
+      <div class="form-row" style="margin-bottom:14px">
+        <label style="color:var(--gray-400)">Matrícula *</label>
+        <input type="text" id="ob-matricula" placeholder="Ej: 334497" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
+      </div>
+      <div class="form-row" style="margin-bottom:14px">
+        <label style="color:var(--gray-400)">Celular</label>
+        <input type="tel" id="ob-celular" placeholder="Ej: 11 4445-2967" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
+      </div>
+      <div class="form-row" style="margin-bottom:14px">
+        <label style="color:var(--gray-400)">Email corporativo</label>
+        <input type="email" id="ob-email" placeholder="nombre@verisure.com.ar" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
+      </div>
+      <div class="form-row" style="margin-bottom:14px">
+        <label style="color:var(--gray-400)">Jefe / Coach</label>
+        <input type="text" id="ob-jefe" placeholder="Ej: Valentín Navarro" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
+      </div>
+      <div class="form-row" style="margin-bottom:20px">
+        <label style="color:var(--gray-400)">Delegación</label>
+        <input type="text" id="ob-delegacion" placeholder="Ej: 353 — La Plata" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
+      </div>
+      <button onclick="guardarOnboarding()" style="width:100%;padding:14px;background:var(--red);color:white;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font)">
+        Empezar a usar el CRM →
+      </button>
+      <div id="ob-error" style="display:none;margin-top:10px;font-size:12px;color:#ff6b6b;text-align:center">Completá al menos tu nombre y matrícula</div>
+    </div>
+  </div>
+</div>
+
 <div class="header">
   <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" class="header-logo-img" onclick="abrirPerfil()">
   <div class="header-right">
@@ -252,12 +294,14 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
       <div style="font-size:15px;font-weight:600">Datos del experto</div>
       <button onclick="cerrarPerfil()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--gray-400);line-height:1">×</button>
     </div>
-    <div class="form-row"><label>Nombre completo</label><input type="text" id="perfil-nombre" placeholder="Tu nombre"></div>
-    <div class="form-row"><label>Matrícula</label><input type="text" id="perfil-matricula" placeholder="334497"></div>
+    <div class="form-row"><label>Nombre completo *</label><input type="text" id="perfil-nombre" placeholder="Tu nombre"></div>
+    <div class="form-row"><label>Matrícula *</label><input type="text" id="perfil-matricula" placeholder="334497"></div>
     <div class="form-row"><label>Celular</label><input type="tel" id="perfil-celular" placeholder="11 4445-2967"></div>
     <div class="form-row"><label>Email corporativo</label><input type="email" id="perfil-email" placeholder="nombre@verisure.com.ar"></div>
+    <div class="form-row"><label>Jefe / Coach</label><input type="text" id="perfil-jefe" placeholder="Valentín Navarro"></div>
     <div class="form-row"><label>Delegación</label><input type="text" id="perfil-delegacion" placeholder="353 — La Plata"></div>
-    <button class="btn btn-primary" onclick="guardarPerfil()">Guardar</button>
+    <button class="btn btn-primary" onclick="guardarPerfil()">Guardar cambios</button>
+    <button class="btn btn-secondary" style="margin-top:8px" onclick="resetearPerfil()">Cambiar de usuario</button>
     <div id="perfil-feedback" style="display:none;margin-top:10px" class="alert alert-success">✓ Datos guardados</div>
   </div>
 </div>
@@ -1267,7 +1311,7 @@ function genMsgProspecto(i){
 🏢 Multi-instalación: ${p.multi}
 ${p.notas?'💬 '+p.notas:''}
 ⏰ ${p.hora}
-— ${perfil.nombre} | Verisure #${perfil.matricula}`;
+— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}\`;
   document.getElementById('msg-wa').value=msg;
   document.getElementById('wa-result-card').style.display='block';
   showModule('whatsapp',document.querySelector('.nav-tab:nth-child(5)'));
@@ -1288,7 +1332,7 @@ ${prospectosDia.map(p=>`  • ${p.nombre} — ${p.oferta}${p.precio?' ('+p.preci
 📅 Ventas en el mes: ${ventasMes.length} (${nRP} RP · ${nRE} RE)
 ✓ Checklist completado: ${checks}/4
 
-— ${perfil.nombre} | Verisure #${perfil.matricula}`;
+— ${perfil.nombre} | #${perfil.matricula} | ${perfil.delegacion||""}\n${perfil.jefe?"Jefe: "+perfil.jefe:""}\`;
   document.getElementById('msg-reporte').textContent=msg;
   document.getElementById('reporte-area').style.display='block';
 }
@@ -1622,10 +1666,36 @@ function initWA(){
 
 
 // ── PERFIL DEL EXPERTO ──
-let perfil = JSON.parse(localStorage.getItem('perfilExperto') || '{"nombre":"Carlos Galeano","matricula":"334497","celular":"11 4445-2967","email":"carlos.galeano@verisure.com.ar","delegacion":"353 — La Plata"}');
+let perfil = JSON.parse(localStorage.getItem('perfilExperto') || 'null') || {};
+
+function chequearOnboarding(){
+  if(!perfil.nombre || !perfil.matricula){
+    document.getElementById('onboarding').style.display = 'block';
+  }
+}
+
+function guardarOnboarding(){
+  const nombre = document.getElementById('ob-nombre').value.trim();
+  const matricula = document.getElementById('ob-matricula').value.trim();
+  if(!nombre || !matricula){
+    document.getElementById('ob-error').style.display = 'block';
+    return;
+  }
+  perfil = {
+    nombre,
+    matricula,
+    celular: document.getElementById('ob-celular').value.trim() || '',
+    email: document.getElementById('ob-email').value.trim() || '',
+    jefe: document.getElementById('ob-jefe').value.trim() || '',
+    delegacion: document.getElementById('ob-delegacion').value.trim() || ''
+  };
+  localStorage.setItem('perfilExperto', JSON.stringify(perfil));
+  document.getElementById('onboarding').style.display = 'none';
+  aplicarPerfil();
+}
 
 function aplicarPerfil(){
-  document.getElementById('header-experto-name').textContent = perfil.nombre || 'Mi perfil';
+  document.getElementById('header-experto-name').textContent = perfil.nombre || '—';
 }
 
 function abrirPerfil(){
@@ -1633,6 +1703,7 @@ function abrirPerfil(){
   document.getElementById('perfil-matricula').value = perfil.matricula || '';
   document.getElementById('perfil-celular').value = perfil.celular || '';
   document.getElementById('perfil-email').value = perfil.email || '';
+  document.getElementById('perfil-jefe').value = perfil.jefe || '';
   document.getElementById('perfil-delegacion').value = perfil.delegacion || '';
   document.getElementById('modal-perfil').style.display = 'flex';
 }
@@ -1643,18 +1714,31 @@ function cerrarPerfil(){
 }
 
 function guardarPerfil(){
-  perfil.nombre = document.getElementById('perfil-nombre').value.trim() || perfil.nombre;
-  perfil.matricula = document.getElementById('perfil-matricula').value.trim() || perfil.matricula;
-  perfil.celular = document.getElementById('perfil-celular').value.trim() || perfil.celular;
-  perfil.email = document.getElementById('perfil-email').value.trim() || perfil.email;
-  perfil.delegacion = document.getElementById('perfil-delegacion').value.trim() || perfil.delegacion;
+  const nombre = document.getElementById('perfil-nombre').value.trim();
+  const matricula = document.getElementById('perfil-matricula').value.trim();
+  if(!nombre || !matricula){ alert('Nombre y matrícula son obligatorios'); return; }
+  perfil = {
+    nombre,
+    matricula,
+    celular: document.getElementById('perfil-celular').value.trim(),
+    email: document.getElementById('perfil-email').value.trim(),
+    jefe: document.getElementById('perfil-jefe').value.trim(),
+    delegacion: document.getElementById('perfil-delegacion').value.trim()
+  };
   localStorage.setItem('perfilExperto', JSON.stringify(perfil));
   aplicarPerfil();
   document.getElementById('perfil-feedback').style.display = 'flex';
   setTimeout(cerrarPerfil, 1500);
 }
 
-// Cerrar modal tocando fondo
+function resetearPerfil(){
+  if(confirm('¿Cambiar de usuario? Se borrarán los datos del perfil actual (las ventas del mes se mantienen).')){
+    localStorage.removeItem('perfilExperto');
+    perfil = {};
+    document.getElementById('onboarding').style.display = 'block';
+  }
+}
+
 document.getElementById('modal-perfil').addEventListener('click', function(e){
   if(e.target === this) cerrarPerfil();
 });
@@ -1666,6 +1750,7 @@ renderProspectos();
 cambiarLlamadas(0);
 initWA();
 aplicarPerfil();
+chequearOnboarding();
 </script>
 </body>
 </html>
