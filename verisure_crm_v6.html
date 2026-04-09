@@ -226,14 +226,152 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
   .bono-grid{grid-template-columns:1fr;}
   .extra-row{grid-template-columns:1fr 64px 64px 32px;}
 }
+
+/* ══════════════════════════════════════
+   RESPONSIVE — Mobile first + Desktop
+══════════════════════════════════════ */
+
+/* Base — ya está optimizado para mobile */
+
+/* Tablet (600px+) */
+@media (min-width: 600px) {
+  .main { padding: 20px 24px; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .bono-grid { grid-template-columns: 1fr 1fr; }
+  .extra-row { grid-template-columns: 1fr 80px 80px 32px; }
+  .nav-tab { padding: 14px 22px; font-size: 14px; }
+}
+
+/* Desktop (900px+) — layout de dos columnas */
+@media (min-width: 900px) {
+  body { background: #f0f0f0; }
+
+  .header { height: 68px; padding: 0 32px; }
+  .header-logo-img { height: 52px; }
+
+  .nav { top: 68px; padding: 0 24px; justify-content: center; }
+  .nav-tab { padding: 16px 28px; font-size: 14px; }
+
+  .main {
+    max-width: 1100px;
+    padding: 28px 32px;
+    margin: 0 auto;
+  }
+
+  /* Dos columnas en módulos que lo permiten */
+  #mod-presupuesto,
+  #mod-micomision {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  /* Columna izquierda: datos + tipo + kit */
+  #mod-presupuesto .card:nth-child(1),
+  #mod-presupuesto .card:nth-child(2),
+  #mod-presupuesto .card:nth-child(3) {
+    grid-column: 1;
+  }
+
+  /* Columna derecha: extras + resumen */
+  #mod-presupuesto .card:nth-child(4),
+  #mod-presupuesto .card:nth-child(5),
+  #card-msg-pres {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+
+  /* Mi Comisión dos columnas */
+  #mod-micomision .card:nth-child(1) { grid-column: 1; }
+  #mod-micomision .card:nth-child(2) { grid-column: 2; grid-row: 1; }
+
+  /* Mi Mes — 3 columnas para bonos */
+  .bono-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  /* Cards más amplias */
+  .card { padding: 20px 24px; }
+
+  /* Total bar más impactante */
+  .total-bar { padding: 20px 28px; }
+  .total-bar-value { font-size: 28px; }
+
+  /* Botones en línea */
+  .btn-row { gap: 12px; }
+
+  /* Extra rows más anchas */
+  .extra-row { grid-template-columns: 1fr 90px 90px 36px; gap: 8px; }
+
+  /* Toggle groups más cómodas */
+  .toggle-btn { padding: 9px 18px; font-size: 14px; }
+}
+
+/* Desktop grande (1200px+) */
+@media (min-width: 1200px) {
+  .main { max-width: 1200px; }
+  #mod-mimes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  #mod-mimes .total-bar { grid-column: 1 / -1; }
+  #mod-mimes .card:nth-child(2) { grid-column: 1; }
+  #mod-mimes .card:nth-child(3) { grid-column: 2; grid-row: 2; }
+  #mod-mimes .card:nth-child(4) { grid-column: 1; grid-row: 3; }
+  #mod-mimes .card:nth-child(5) { grid-column: 2; grid-row: 3; }
+}
+
+/* Gestión del día — desktop */
+@media (min-width: 900px) {
+  #mod-gestion { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  #mod-gestion .card:nth-child(1) { grid-column: 1; }
+  #mod-gestion .card:nth-child(2) { grid-column: 2; }
+  #mod-gestion .card:nth-child(3) { grid-column: 1 / -1; }
+  #mod-gestion .card:nth-child(4) { grid-column: 1 / -1; }
+}
+
+/* WhatsApp — desktop */
+@media (min-width: 900px) {
+  #mod-whatsapp { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  #wa-panel-usar { display: block; }
+  #wa-result-card { grid-column: 2; grid-row: 1 / span 3; }
+}
+
+/* Fix específico para módulos activos en grid */
+.module { display: none; }
+.module.active { display: block; }
+@media (min-width: 900px) {
+  #mod-presupuesto.active,
+  #mod-micomision.active,
+  #mod-gestion.active {
+    display: grid;
+  }
+  #mod-mimes.active {
+    display: grid;
+  }
+}
+
+/* ── MOBILE ESPECÍFICO ── */
+@media (max-width: 480px) {
+  .header { height: 58px; padding: 0 14px; }
+  .header-logo-img { height: 38px; }
+  .header-experto { font-size: 11px; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nav-tab { padding: 12px 14px; font-size: 12px; }
+  .main { padding: 12px; }
+  .card { padding: 14px; border-radius: 10px; }
+  .toggle-btn { padding: 7px 12px; font-size: 12px; }
+  .btn { padding: 12px 16px; font-size: 13px; }
+  .form-grid { grid-template-columns: 1fr; gap: 0; }
+  .extra-row { grid-template-columns: 1fr 68px 68px 30px; gap: 4px; }
+  .bono-grid { grid-template-columns: 1fr 1fr; }
+  .total-bar-value { font-size: 18px; }
+  .venta-name { font-size: 12px; }
+}
+
 </style>
 </head>
 <body>
 
 <!-- ====== MODAL USUARIO ====== -->
-<div id="modal-usuario" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;background:#0a0a0a url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/parallax-home.webp') center/cover no-repeat">
-  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.92) 100%)"></div>
-  <div style="position:relative;max-width:400px;margin:0 auto;padding:60px 24px 40px;display:flex;flex-direction:column;align-items:center">
+<div id="modal-usuario" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;overflow-y:scroll;-webkit-overflow-scrolling:touch;background:#0a0a0a url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/parallax-home.webp') center/cover no-repeat;background-attachment:fixed">
+  <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.92) 100%);pointer-events:none;z-index:0"></div>
+  <div style="position:relative;z-index:1;max-width:400px;margin:0 auto;padding:48px 20px 60px;display:flex;flex-direction:column;align-items:center">
     <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:80px;object-fit:contain;filter:brightness(0) invert(1);margin-bottom:32px">
     <div style="color:white;font-size:20px;font-weight:600;margin-bottom:6px;text-align:center">¿Quién está usando la herramienta?</div>
     <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:28px;text-align:center">Completá tus datos una sola vez. Quedan guardados en este dispositivo.</div>
@@ -788,9 +926,14 @@ function fmtIVA(base){const iva=base*0.21;return{base,iva,total:base+iva};}
 function fmtIVA(base){const iva=base*IVA;return{base,iva,total:base+iva};}
 
 function showModule(id,btn){
-  document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+  document.querySelectorAll('.module').forEach(m=>{
+    m.classList.remove('active');
+    m.style.display='none';
+  });
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('mod-'+id).classList.add('active');
+  var el=document.getElementById('mod-'+id);
+  el.classList.add('active');
+  el.style.display='';  // dejar que CSS decida (block o grid según breakpoint)
   if(btn) btn.classList.add('active');
 }
 function setToggle(gid,btn){
