@@ -934,7 +934,8 @@ const CUOTAS_EXTRAS = {
   'Botón emergencias':{'x1':1999,'x2':2999},
   'Control remoto':{'x1':1999,'x2':2999},
   'Panel de control':{'x1':2999},
-  'Starkey':{'x1':0}
+  'Starkey':{'x1':0},
+  'Placa disuasoria':{'x1':0}
 };
 // Comisión por extra: [x1, x2, x3, x4, null, x6] — null = no aplica
 const COM_EXTRAS = {
@@ -947,7 +948,8 @@ const COM_EXTRAS = {
   'Arlo Indoor':{'Alto':[40000,80000],'Medio':[15000,30000]},
   'Arlo Outdoor':{'Alto':[50000,100000],'Medio':[12000,24000]},
   'Panel de control':{'Alto':[70000],'Medio':[20000]},
-  'Starkey':{'Alto':[20000],'Medio':[8000]}
+  'Starkey':{'Alto':[20000],'Medio':[8000]},
+  'Placa disuasoria':{'Alto':[0],'Bajo':[0]}
 };
 const COM_KIT = {
   'Kit':{'RE':{'Catálogo':140000,'Alto':70000,'Medio':35000,'Bajo':0},'RP':{'Catálogo':200000,'Alto':100000,'Medio':50000,'Bajo':0}},
@@ -956,7 +958,7 @@ const COM_KIT = {
 const ESCALAS_PERF = [{min:8,bono:170000},{min:10,bono:300000},{min:12,bono:500000}];
 const ESCALAS_RP_BONO = [{min:5,bono:300000},{min:7,bono:600000}];
 const ESCALAS_EXPRESS = [{min:2,bono:40000},{min:4,bono:100000},{min:8,bono:250000}];
-const EXTRAS_OPTS = ['Shock Sensor','Orion','Orion (Close Pack)','Aquila Outdoor','Arlo Indoor','Arlo Outdoor','Zerovision','Botón emergencias','Control remoto','Panel de control','Starkey'];
+const EXTRAS_OPTS = ['Shock Sensor','Orion','Orion (Close Pack)','Aquila Outdoor','Arlo Indoor','Arlo Outdoor','Zerovision','Botón emergencias','Control remoto','Panel de control','Starkey','Placa disuasoria'];
 const CANT_OPTS = ['x1','x2','x3','x4','x6'];
 const PRECIO_EXTRA_OPTS = ['Alto','Bajo','Medio'];
 const ESTADOS = {pendiente:'Pendiente',interesado:'Interesado',cerrado:'Cerrado',nointeres:'Sin interés'};
@@ -1869,6 +1871,7 @@ const DEVICE_IMG_MAP = {
   'Control remoto': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/mando.png',
   'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png',
   'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png',
+  'Placa disuasoria': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/placa.png',
 };
 const DEVICE_DESC = {
   'Shock Sensor': 'Triple detección: apertura, golpes y vibraciones',
@@ -1882,6 +1885,7 @@ const DEVICE_DESC = {
   'Control remoto': 'Control de alarma + botón SOS',
   'Panel de control': 'Panel de entrada con habla/escucha',
   'Starkey': 'Pack de llaves inteligentes x3',
+  'Placa disuasoria': 'Cartel disuasorio exterior — incluido gratis',
 };
 function onExtraChange(row){
   const sel=row.querySelector('select');
