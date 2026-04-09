@@ -465,7 +465,7 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
           <div><div style="font-size:12px;font-weight:600">Orion</div><div style="font-size:11px;color:var(--gray-400)">x1</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;background:var(--gray-100);border-radius:8px;padding:8px 10px;grid-column:1/-1">
-          <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png?v=2" style="width:36px;height:36px;object-fit:contain">
+          <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/unidad-central.png?v=2" style="width:36px;height:36px;object-fit:contain">
           <div><div style="font-size:12px;font-weight:600">Unidad Central (CU)</div><div style="font-size:11px;color:var(--gray-400)">x1 — oculta</div></div>
         </div>
       </div>
@@ -1025,7 +1025,8 @@ const CUOTAS_EXTRAS = {
   'Control remoto':{'x1':1999,'x2':2999},
   'Panel de control':{'x1':2999},
   'Starkey':{'x1':0},
-  'Placa disuasoria':{'x1':0}
+  'Placa disuasoria':{'x1':0},
+  'Unidad Central':{'x1':0}
 };
 // Comisión por extra: [x1, x2, x3, x4, null, x6] — null = no aplica
 const COM_EXTRAS = {
@@ -1039,7 +1040,8 @@ const COM_EXTRAS = {
   'Arlo Outdoor':{'Alto':[50000,100000],'Medio':[12000,24000]},
   'Panel de control':{'Alto':[70000],'Medio':[20000]},
   'Starkey':{'Alto':[20000],'Medio':[8000]},
-  'Placa disuasoria':{'Alto':[0],'Bajo':[0]}
+  'Placa disuasoria':{'Alto':[0],'Bajo':[0]},
+  'Unidad Central':{'Alto':[0],'Bajo':[0]}
 };
 
 // Precios de venta al cliente por extra (sin IVA)
@@ -1057,6 +1059,7 @@ const PRECIOS_EXTRAS_VENTA = {
   'Panel de control':{'Alto':[169999], 'Bajo':[99999]},
   'Starkey':         {'Alto':[49999], 'Bajo':[19999]},
   'Placa disuasoria':{'Alto':[0], 'Bajo':[0]},
+  'Unidad Central':{'Alto':[199999], 'Bajo':[129999]},
 };
 
 const COM_KIT = {
@@ -1066,7 +1069,7 @@ const COM_KIT = {
 const ESCALAS_PERF = [{min:8,bono:170000},{min:10,bono:300000},{min:12,bono:500000}];
 const ESCALAS_RP_BONO = [{min:5,bono:300000},{min:7,bono:600000}];
 const ESCALAS_EXPRESS = [{min:2,bono:40000},{min:4,bono:100000},{min:8,bono:250000}];
-const EXTRAS_OPTS = ['Shock Sensor','Orion','Orion (Close Pack)','Aquila Outdoor','Arlo Indoor','Arlo Outdoor','Zerovision','Botón emergencias','Control remoto','Panel de control','Starkey','Placa disuasoria'];
+const EXTRAS_OPTS = ['Shock Sensor','Orion','Orion (Close Pack)','Aquila Outdoor','Arlo Indoor','Arlo Outdoor','Zerovision','Botón emergencias','Control remoto','Panel de control','Starkey','Placa disuasoria','Unidad Central'];
 const CANT_OPTS = ['x1','x2','x3','x4','x6'];
 const PRECIO_EXTRA_OPTS = ['Alto','Bajo','Medio'];
 const ESTADOS = {pendiente:'Pendiente',interesado:'Interesado',cerrado:'Cerrado',nointeres:'Sin interés'};
@@ -2049,6 +2052,7 @@ const DEVICE_IMG_MAP = {
   'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png?v=2',
   'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png?v=2',
   'Placa disuasoria': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/placa.png?v=2',
+  'Unidad Central': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/unidad-central.png?v=2',
 };
 const DEVICE_DESC = {
   'Shock Sensor': 'Triple detección: apertura, golpes y vibraciones',
@@ -2063,6 +2067,7 @@ const DEVICE_DESC = {
   'Panel de control': 'Panel de entrada con habla/escucha',
   'Starkey': 'Pack de llaves inteligentes x3',
   'Placa disuasoria': 'Cartel disuasorio exterior — incluido gratis',
+  'Unidad Central': 'Cerebro del sistema — gestiona todas las señales',
 };
 function onExtraChange(row){
   const sel=row.querySelector('select');
