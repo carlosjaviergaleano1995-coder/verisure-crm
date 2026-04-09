@@ -86,8 +86,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);}
 .device-img-name{font-size:13px;font-weight:500;color:var(--black);}
 .device-img-desc{font-size:11px;color:var(--gray-400);margin-top:2px;}
 /* RESULT BOX halo */
-.result-box{background:var(--red-bg);border:1.5px solid rgba(232,0,29,0.15);border-radius:var(--radius);padding:16px;margin-top:12px;position:relative;overflow:hidden;}
-.result-box::before{content:'';position:absolute;top:-20px;right:-20px;width:180px;height:180px;background:url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/bg-halo-sm.avif') center/contain no-repeat;opacity:0.12;pointer-events:none;}
+.result-box{background:var(--red-bg);border:1.5px solid rgba(232,0,29,0.15);border-radius:var(--radius);padding:16px;margin-top:12px;}
 
 .result-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(232,0,29,0.1);}
 .result-row:last-child{border-bottom:none;}
@@ -1671,9 +1670,9 @@ function onExtraChange(row){
 }
 
 // ── SISTEMA DE USUARIOS ──
+
 let usuarios=JSON.parse(localStorage.getItem('verisureUsuarios')||'[]');
 let perfil=JSON.parse(localStorage.getItem('perfilActivo')||'null');
-
 function chequearOnboarding(){
   if(!perfil||!perfil.nombre){mostrarOnboarding();}
 }
@@ -1779,13 +1778,15 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 // ── INIT ──
-updateHeaderMes();
-updateMes();
-renderProspectos();
-cambiarLlamadas(0);
-initWA();
-aplicarPerfil();
-chequearOnboarding();
+window.addEventListener('load', function() {
+  updateHeaderMes();
+  updateMes();
+  renderProspectos();
+  cambiarLlamadas(0);
+  initWA();
+  aplicarPerfil();
+  chequearOnboarding();
+});
 </script>
 </body>
 </html>
