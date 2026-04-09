@@ -1861,7 +1861,7 @@ const DEVICE_IMG_MAP = {
   'Shock Sensor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png',
   'Orion': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
   'Orion (Close Pack)': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
-  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png',
+  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/aquila-outdoor.png',
   'Arlo Indoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-indoor.png',
   'Arlo Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png',
   'Zerovision': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/zerovision.png',
@@ -2045,9 +2045,7 @@ function renderPromoOpciones(){
   var el = document.getElementById('promo-opciones');
   if(!el) return;
   el.innerHTML = promos.map(function(p, i){
-    var bonifLabel = p.extras_bonif && p.extras_bonif.length
-      ? ' <span style="font-size:11px;color:var(--green);font-weight:600">+' + p.extras_bonif.map(function(e){ return e.cant+' '+e.disp; }).join(', ') + ' bonificado</span>'
-      : '';
+    var bonifLabel = ''; // no mostrar dispositivos bonificados en la etiqueta
     return '<button class="toggle-btn promo-btn" data-val="' + i + '" onclick="setPromo(' + i + ',this)" style="text-align:left;border-radius:8px;padding:10px 14px;width:100%">'
       + '<span style="font-family:var(--mono);font-weight:700">$' + p.precio.toLocaleString('es-AR') + '</span>'
       + ' · ' + p.nombre
