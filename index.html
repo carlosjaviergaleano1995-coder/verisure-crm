@@ -81,8 +81,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);}
 /* RESULT BOX */
 
 /* DEVICE IMAGES */
-.device-img-preview{display:flex;align-items:center;gap:10px;background:var(--gray-100);border-radius:var(--radius-sm);padding:8px 12px;margin-top:6px;border:1px solid var(--gray-200);}
-.device-img-preview img{width:48px;height:48px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.15));}
+.device-img-preview{display:flex;align-items:center;gap:10px;background:var(--gray-100);border-radius:var(--radius-sm);padding:8px 12px;margin-top:4px;margin-bottom:8px;border:1px solid var(--gray-200);}
+.device-img-preview img{width:52px;height:52px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.15));}
 .device-img-name{font-size:13px;font-weight:500;color:var(--black);}
 .device-img-desc{font-size:11px;color:var(--gray-400);margin-top:2px;}
 /* RESULT BOX halo */
@@ -986,9 +986,21 @@ function addExtra(listId,prefix){
     <select onchange="onExtraChange(this.closest('.extra-row'))">${EXTRAS_OPTS.map(e=>`<option value="${e}">${e}</option>`).join('')}</select>
     <select>${CANT_OPTS.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
     <select>${PRECIO_EXTRA_OPTS.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
-    <button class="btn-remove" onclick="document.getElementById('${prefix}-row-${idx}').remove()">×</button>
+    <button class="btn-remove" onclick="removeExtraRow('${prefix}-row-${idx}')">×</button>
   </div>`;
   document.getElementById(listId).insertAdjacentHTML('beforeend',html);
+  // Disparar imagen del primer dispositivo por defecto
+  const newRow=document.getElementById(prefix+'-row-'+idx);
+  if(newRow) onExtraChange(newRow);
+}
+
+function removeExtraRow(rowId){
+  const row=document.getElementById(rowId);
+  if(!row)return;
+  // Eliminar preview si existe
+  const next=row.nextElementSibling;
+  if(next&&next.classList.contains('device-img-preview'))next.remove();
+  row.remove();
 }
 function getExtrasComision(listId){
   let total=0;
@@ -1807,10 +1819,16 @@ const DEVICE_DESC = {
 function onExtraChange(row){
   const sel=row.querySelector('select');
   const disp=sel?sel.value:'';
-  let preview=row.parentNode.querySelector('.device-img-preview');
+  // Buscar preview específico de ESTA fila (inmediatamente después)
+  let preview=row.nextElementSibling;
+  if(preview&&!preview.classList.contains('device-img-preview'))preview=null;
   if(!disp||!DEVICE_IMG_MAP[disp]){if(preview)preview.remove();return;}
-  if(!preview){preview=document.createElement('div');preview.className='device-img-preview';row.after(preview);}
-  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
+  if(!preview){
+    preview=document.createElement('div');
+    preview.className='device-img-preview';
+    row.after(preview);
+  }
+  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'" style="width:52px;height:52px;object-fit:contain;flex-shrink:0"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
 }
 
 // ── SISTEMA DE USUARIOS ──
@@ -1931,10 +1949,16 @@ document.addEventListener('DOMContentLoaded', function() {
 function onExtraChange(row){
   const sel=row.querySelector('select');
   const disp=sel?sel.value:'';
-  let preview=row.parentNode.querySelector('.device-img-preview');
+  // Buscar preview específico de ESTA fila (inmediatamente después)
+  let preview=row.nextElementSibling;
+  if(preview&&!preview.classList.contains('device-img-preview'))preview=null;
   if(!disp||!DEVICE_IMG_MAP[disp]){if(preview)preview.remove();return;}
-  if(!preview){preview=document.createElement('div');preview.className='device-img-preview';row.after(preview);}
-  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
+  if(!preview){
+    preview=document.createElement('div');
+    preview.className='device-img-preview';
+    row.after(preview);
+  }
+  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'" style="width:52px;height:52px;object-fit:contain;flex-shrink:0"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
 }
 
 // ── INIT ──
