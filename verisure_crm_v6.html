@@ -230,30 +230,31 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 </head>
 <body>
 
-<!-- ====== ONBOARDING ====== -->
-<div id="onboarding" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;overflow-y:auto;background:#0a0a0a url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/parallax-home.webp') center/cover no-repeat">
-  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.90) 100%)"></div>
-  <div style="position:relative;max-width:440px;margin:0 auto;padding:36px 20px 60px">
-    <div style="text-align:center;margin-bottom:28px">
-      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:80px;object-fit:contain;filter:brightness(0) invert(1);display:block;margin:0 auto 20px">
-      <div style="color:var(--white);font-size:20px;font-weight:600;margin-bottom:6px">¿Quién sos?</div>
-      <div style="color:rgba(255,255,255,0.5);font-size:13px">Seleccioná tu perfil o creá uno nuevo</div>
-    </div>
-    <div id="ob-users-list" style="margin-bottom:16px"></div>
-    <button onclick="obMostrarForm()" id="ob-btn-nuevo" style="width:100%;padding:14px;background:rgba(255,255,255,0.08);color:white;border:1.5px dashed rgba(255,255,255,0.25);border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);margin-bottom:16px">+ Agregar nuevo usuario</button>
-    <div id="ob-form" style="display:none;background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--radius);padding:20px;border:1px solid rgba(255,255,255,0.12)">
-      <div style="color:white;font-size:14px;font-weight:600;margin-bottom:14px">Nuevo usuario</div>
-      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Nombre completo *</label><input type="text" id="ob-nombre" placeholder="Ej: Carlos Galeano" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
-      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Matrícula *</label><input type="text" id="ob-matricula" placeholder="Ej: 334497" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
-      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Celular</label><input type="tel" id="ob-celular" placeholder="Ej: 11 4445-2967" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
-      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Email corporativo</label><input type="email" id="ob-email" placeholder="nombre@verisure.com.ar" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
-      <div class="form-row" style="margin-bottom:12px"><label style="color:rgba(255,255,255,0.6)">Jefe / Coach</label><input type="text" id="ob-jefe" placeholder="Ej: Valentín Navarro" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
-      <div class="form-row" style="margin-bottom:16px"><label style="color:rgba(255,255,255,0.6)">Delegación</label><input type="text" id="ob-delegacion" placeholder="Ej: 353 — La Plata" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white"></div>
-      <div style="display:flex;gap:8px">
-        <button onclick="obGuardarUsuario()" style="flex:1;padding:12px;background:var(--red);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)">Guardar y entrar</button>
-        <button onclick="obOcultarForm()" style="padding:12px 16px;background:rgba(255,255,255,0.1);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;cursor:pointer;font-family:var(--font)">Cancelar</button>
+<!-- ====== MODAL USUARIO ====== -->
+<div id="modal-usuario" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;background:#0a0a0a url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/parallax-home.webp') center/cover no-repeat">
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.92) 100%)"></div>
+  <div style="position:relative;max-width:400px;margin:0 auto;padding:60px 24px 40px;display:flex;flex-direction:column;align-items:center">
+    <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:80px;object-fit:contain;filter:brightness(0) invert(1);margin-bottom:32px">
+    <div style="color:white;font-size:20px;font-weight:600;margin-bottom:6px;text-align:center">¿Quién está usando la herramienta?</div>
+    <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:28px;text-align:center">Completá tus datos una sola vez. Quedan guardados en este dispositivo.</div>
+    <div style="width:100%;background:rgba(255,255,255,0.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:16px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
+      <div style="margin-bottom:14px"><label style="display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);margin-bottom:6px">Nombre completo *</label>
+        <input type="text" id="mu-nombre" placeholder="Ej: Carlos Galeano" autocomplete="name" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;color:white;font-size:15px;font-family:inherit;outline:none" onfocus="this.style.borderColor='rgba(232,0,29,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
       </div>
-      <div id="ob-error" style="display:none;margin-top:10px;font-size:12px;color:#ff6b6b;text-align:center">Completá nombre y matrícula</div>
+      <div style="margin-bottom:14px"><label style="display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);margin-bottom:6px">Matrícula *</label>
+        <input type="text" id="mu-matricula" placeholder="Ej: 334497" inputmode="numeric" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;color:white;font-size:15px;font-family:inherit;outline:none" onfocus="this.style.borderColor='rgba(232,0,29,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+      </div>
+      <div style="margin-bottom:14px"><label style="display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);margin-bottom:6px">Celular</label>
+        <input type="tel" id="mu-celular" placeholder="Ej: 11 4445-2967" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;color:white;font-size:15px;font-family:inherit;outline:none" onfocus="this.style.borderColor='rgba(232,0,29,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+      </div>
+      <div style="margin-bottom:14px"><label style="display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);margin-bottom:6px">Email corporativo</label>
+        <input type="email" id="mu-email" placeholder="nombre@verisure.com.ar" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;color:white;font-size:15px;font-family:inherit;outline:none" onfocus="this.style.borderColor='rgba(232,0,29,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+      </div>
+      <div style="margin-bottom:20px"><label style="display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);margin-bottom:6px">Delegación</label>
+        <input type="text" id="mu-delegacion" placeholder="Ej: 353 — La Plata" style="width:100%;padding:12px 14px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;color:white;font-size:15px;font-family:inherit;outline:none" onfocus="this.style.borderColor='rgba(232,0,29,0.7)'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+      </div>
+      <div id="mu-error" style="display:none;color:#ff6b6b;font-size:12px;margin-bottom:12px;text-align:center">Completá al menos nombre y matrícula</div>
+      <button onclick="muGuardar()" style="width:100%;padding:15px;background:#E8001D;color:white;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.3px">Entrar al CRM →</button>
     </div>
   </div>
 </div>
@@ -272,7 +273,7 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
     <div class="form-row"><label>Jefe / Coach</label><input type="text" id="perfil-jefe" placeholder="Valentín Navarro"></div>
     <div class="form-row"><label>Delegación</label><input type="text" id="perfil-delegacion" placeholder="353 — La Plata"></div>
     <button class="btn btn-primary" onclick="guardarPerfil()">Guardar cambios</button>
-    <button class="btn btn-secondary" style="margin-top:8px" onclick="cambiarUsuario()">Cambiar de usuario</button>
+    <button class="btn btn-secondary" style="margin-top:8px" onclick="muCambiarUsuario()">Cambiar de usuario</button>
     <div id="perfil-feedback" style="display:none;margin-top:10px" class="alert alert-success">✓ Datos guardados</div>
   </div>
 </div>
@@ -1670,115 +1671,131 @@ function onExtraChange(row){
 }
 
 // ── SISTEMA DE USUARIOS ──
+// Approach simple: modal al abrir si no hay perfil guardado
+// Sin gestión de múltiples usuarios — cada dispositivo tiene su perfil
 
-let usuarios=JSON.parse(localStorage.getItem('verisureUsuarios')||'[]');
-let perfil=JSON.parse(localStorage.getItem('perfilActivo')||'null');
-function chequearOnboarding(){
-  if(!perfil||!perfil.nombre){mostrarOnboarding();}
+var perfil = null;
+
+function _cargarPerfil() {
+  try {
+    var stored = localStorage.getItem('vcrm_perfil');
+    if (stored) perfil = JSON.parse(stored);
+  } catch(e) {}
 }
-function mostrarOnboarding(){
-  renderObUsers();
-  document.getElementById('onboarding').style.display='block';
-  document.body.style.overflow='hidden';
+
+function _guardarPerfilStorage() {
+  try { localStorage.setItem('vcrm_perfil', JSON.stringify(perfil)); } catch(e) {}
 }
-function ocultarOnboarding(){
-  document.getElementById('onboarding').style.display='none';
-  document.body.style.overflow='';
-}
-function renderObUsers(){
-  const el=document.getElementById('ob-users-list');
-  if(!usuarios.length){el.innerHTML='';return;}
-  el.innerHTML=usuarios.map((u,i)=>`
-    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:background 0.15s" onclick="seleccionarUsuario(${i})" onmouseover="this.style.background='rgba(232,0,29,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-      <div style="width:40px;height:40px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:white;font-size:16px;font-weight:700;flex-shrink:0">${u.nombre.charAt(0).toUpperCase()}</div>
-      <div style="flex:1;min-width:0"><div style="color:white;font-size:14px;font-weight:600">${u.nombre}</div><div style="color:rgba(255,255,255,0.45);font-size:12px">#${u.matricula}${u.delegacion?' · '+u.delegacion:''}</div></div>
-      <div style="color:rgba(255,255,255,0.3);font-size:20px">›</div>
-    </div>`).join('')+
-    `<button onclick="gestionarUsuarios(event)" style="width:100%;padding:8px;background:transparent;color:rgba(255,255,255,0.3);border:none;font-size:11px;cursor:pointer;font-family:var(--font)">Eliminar un usuario</button>`;
-}
-function seleccionarUsuario(i){
-  perfil=usuarios[i];
-  localStorage.setItem('perfilActivo',JSON.stringify(perfil));
-  ocultarOnboarding();
-  aplicarPerfil();
-}
-function gestionarUsuarios(e){
-  e.stopPropagation();
-  const nombre=prompt('Escribí el nombre exacto del usuario a eliminar:');
-  if(!nombre)return;
-  const idx=usuarios.findIndex(u=>u.nombre.toLowerCase()===nombre.toLowerCase());
-  if(idx===-1){alert('Usuario no encontrado');return;}
-  if(confirm(`¿Eliminar a ${usuarios[idx].nombre}?`)){
-    usuarios.splice(idx,1);
-    localStorage.setItem('verisureUsuarios',JSON.stringify(usuarios));
-    renderObUsers();
+
+function chequearOnboarding() {
+  _cargarPerfil();
+  if (!perfil || !perfil.nombre) {
+    muMostrar();
+  } else {
+    aplicarPerfil();
   }
 }
-function obMostrarForm(){
-  document.getElementById('ob-form').style.display='block';
-  document.getElementById('ob-btn-nuevo').style.display='none';
+
+function muMostrar() {
+  var m = document.getElementById('modal-usuario');
+  if (m) { m.style.display = 'block'; document.body.style.overflow = 'hidden'; }
 }
-function obOcultarForm(){
-  document.getElementById('ob-form').style.display='none';
-  document.getElementById('ob-btn-nuevo').style.display='block';
-  document.getElementById('ob-error').style.display='none';
-  ['ob-nombre','ob-matricula','ob-celular','ob-email','ob-jefe','ob-delegacion'].forEach(id=>document.getElementById(id).value='');
+
+function muOcultar() {
+  var m = document.getElementById('modal-usuario');
+  if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
 }
-function obGuardarUsuario(){
-  const nombre=document.getElementById('ob-nombre').value.trim();
-  const matricula=document.getElementById('ob-matricula').value.trim();
-  if(!nombre||!matricula){document.getElementById('ob-error').style.display='block';return;}
-  const nuevo={nombre,matricula,celular:document.getElementById('ob-celular').value.trim(),email:document.getElementById('ob-email').value.trim(),jefe:document.getElementById('ob-jefe').value.trim(),delegacion:document.getElementById('ob-delegacion').value.trim()};
-  usuarios.push(nuevo);
-  localStorage.setItem('verisureUsuarios',JSON.stringify(usuarios));
-  perfil=nuevo;
-  localStorage.setItem('perfilActivo',JSON.stringify(perfil));
-  ocultarOnboarding();
+
+function muGuardar() {
+  var nombre = document.getElementById('mu-nombre').value.trim();
+  var matricula = document.getElementById('mu-matricula').value.trim();
+  if (!nombre || !matricula) {
+    document.getElementById('mu-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('mu-error').style.display = 'none';
+  perfil = {
+    nombre: nombre,
+    matricula: matricula,
+    celular: document.getElementById('mu-celular').value.trim(),
+    email: document.getElementById('mu-email').value.trim(),
+    delegacion: document.getElementById('mu-delegacion').value.trim(),
+    jefe: ''
+  };
+  _guardarPerfilStorage();
+  muOcultar();
   aplicarPerfil();
 }
-function aplicarPerfil(){
-  if(!perfil)return;
-  document.getElementById('header-experto-name').textContent=perfil.nombre||'—';
-}
-function abrirPerfil(){
-  if(!perfil)return;
-  document.getElementById('perfil-nombre').value=perfil.nombre||'';
-  document.getElementById('perfil-matricula').value=perfil.matricula||'';
-  document.getElementById('perfil-celular').value=perfil.celular||'';
-  document.getElementById('perfil-email').value=perfil.email||'';
-  document.getElementById('perfil-jefe').value=perfil.jefe||'';
-  document.getElementById('perfil-delegacion').value=perfil.delegacion||'';
-  document.getElementById('modal-perfil').style.display='flex';
-}
-function cerrarPerfil(){
-  document.getElementById('modal-perfil').style.display='none';
-  document.getElementById('perfil-feedback').style.display='none';
-}
-function guardarPerfil(){
-  const nombre=document.getElementById('perfil-nombre').value.trim();
-  const matricula=document.getElementById('perfil-matricula').value.trim();
-  if(!nombre||!matricula){alert('Nombre y matrícula son obligatorios');return;}
-  const idx=usuarios.findIndex(u=>u.matricula===perfil.matricula);
-  perfil={nombre,matricula,celular:document.getElementById('perfil-celular').value.trim(),email:document.getElementById('perfil-email').value.trim(),jefe:document.getElementById('perfil-jefe').value.trim(),delegacion:document.getElementById('perfil-delegacion').value.trim()};
-  if(idx>=0)usuarios[idx]=perfil;
-  localStorage.setItem('verisureUsuarios',JSON.stringify(usuarios));
-  localStorage.setItem('perfilActivo',JSON.stringify(perfil));
-  aplicarPerfil();
-  document.getElementById('perfil-feedback').style.display='flex';
-  setTimeout(cerrarPerfil,1500);
-}
-function cambiarUsuario(){
-  perfil=null;
-  localStorage.removeItem('perfilActivo');
+
+function muCambiarUsuario() {
+  perfil = null;
+  try { localStorage.removeItem('vcrm_perfil'); } catch(e) {}
   cerrarPerfil();
-  mostrarOnboarding();
+  // Pre-llenar con datos actuales para facilitar edición
+  muMostrar();
 }
-document.addEventListener('DOMContentLoaded',function(){
-  document.getElementById('modal-perfil').addEventListener('click',function(e){if(e.target===this)cerrarPerfil();});
+
+function aplicarPerfil() {
+  if (!perfil) return;
+  var el = document.getElementById('header-experto-name');
+  if (el) el.textContent = perfil.nombre || '—';
+}
+
+function abrirPerfil() {
+  _cargarPerfil();
+  if (!perfil) return;
+  document.getElementById('perfil-nombre').value = perfil.nombre || '';
+  document.getElementById('perfil-matricula').value = perfil.matricula || '';
+  document.getElementById('perfil-celular').value = perfil.celular || '';
+  document.getElementById('perfil-email').value = perfil.email || '';
+  document.getElementById('perfil-jefe').value = perfil.jefe || '';
+  document.getElementById('perfil-delegacion').value = perfil.delegacion || '';
+  document.getElementById('modal-perfil').style.display = 'flex';
+}
+
+function cerrarPerfil() {
+  document.getElementById('modal-perfil').style.display = 'none';
+  document.getElementById('perfil-feedback').style.display = 'none';
+}
+
+function guardarPerfil() {
+  var nombre = document.getElementById('perfil-nombre').value.trim();
+  var matricula = document.getElementById('perfil-matricula').value.trim();
+  if (!nombre || !matricula) { alert('Nombre y matrícula son obligatorios'); return; }
+  perfil = {
+    nombre: nombre,
+    matricula: matricula,
+    celular: document.getElementById('perfil-celular').value.trim(),
+    email: document.getElementById('perfil-email').value.trim(),
+    jefe: document.getElementById('perfil-jefe').value.trim(),
+    delegacion: document.getElementById('perfil-delegacion').value.trim()
+  };
+  _guardarPerfilStorage();
+  aplicarPerfil();
+  document.getElementById('perfil-feedback').style.display = 'flex';
+  setTimeout(cerrarPerfil, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var mp = document.getElementById('modal-perfil');
+  if (mp) mp.addEventListener('click', function(e) { if (e.target === this) cerrarPerfil(); });
 });
 
+
+// ── DEVICE IMAGE MAP ──
+
+
+function onExtraChange(row){
+  const sel=row.querySelector('select');
+  const disp=sel?sel.value:'';
+  let preview=row.parentNode.querySelector('.device-img-preview');
+  if(!disp||!DEVICE_IMG_MAP[disp]){if(preview)preview.remove();return;}
+  if(!preview){preview=document.createElement('div');preview.className='device-img-preview';row.after(preview);}
+  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
+}
+
 // ── INIT ──
-window.addEventListener('load', function() {
+document.addEventListener('DOMContentLoaded', function() {
   updateHeaderMes();
   updateMes();
   renderProspectos();
