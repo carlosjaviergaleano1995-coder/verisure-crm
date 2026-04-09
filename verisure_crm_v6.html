@@ -1172,6 +1172,39 @@ const DEVICE_DESC = {
   'Placa disuasoria': 'Cartel disuasorio exterior — incluido gratis',
   'Unidad Central': 'Cerebro del sistema — gestiona todas las señales',
 };
+
+// ── EXTRAS ──
+function addExtra(listId, prefix){
+  const idx = prefix === 'ext' ? ++extraCount : ++extraCountCom;
+  const wrapperId = prefix + '-wrap-' + idx;
+  const row = `<div class="extra-wrap" id="${wrapperId}" style="margin-bottom:4px">
+    <div class="extra-row" id="${prefix}-row-${idx}">
+      <select onchange="onExtraChange(document.getElementById('${wrapperId}'))">${EXTRAS_OPTS.map(e=>`<option value="${e}">${e}</option>`).join('')}</select>
+      <select>${CANT_OPTS.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
+      <select>${PRECIO_EXTRA_OPTS.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
+      <button class="btn-remove" onclick="removeExtraRow('${wrapperId}')">×</button>
+    </div>
+    <div class="extra-bonif-row">
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-600);cursor:pointer">
+        <input type="checkbox" onchange="onExtraChange(document.getElementById('${wrapperId}'))" style="width:14px;height:14px;accent-color:var(--green)">
+        <span>Bonificado (instalación $0, cuota normal)</span>
+      </label>
+    </div>
+    <div class="device-img-preview" style="display:none"></div>
+  </div>`;
+  document.getElementById(listId).insertAdjacentHTML('beforeend', row);
+  // Mostrar imagen del primer dispositivo por defecto
+  setTimeout(function(){
+    var wrap = document.getElementById(wrapperId);
+    if(wrap) onExtraChange(wrap);
+  }, 0);
+}
+
+function removeExtraRow(wrapId){
+  var wrap = document.getElementById(wrapId);
+  if(wrap) wrap.remove();
+}
+
 function onExtraChange(wrap){
   // wrap es el .extra-wrap que contiene todo
   if(!wrap) return;
