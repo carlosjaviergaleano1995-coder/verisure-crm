@@ -2,8 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verisure CRM — Herramienta de Ventas</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verisure CRM — Herramienta de Ventas v6.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 :root {
@@ -1194,10 +1197,8 @@ function addExtra(listId, prefix){
   </div>`;
   document.getElementById(listId).insertAdjacentHTML('beforeend', row);
   // Mostrar imagen del primer dispositivo por defecto
-  setTimeout(function(){
-    var wrap = document.getElementById(wrapperId);
-    if(wrap) onExtraChange(wrap);
-  }, 0);
+  var newWrap = document.getElementById(wrapperId);
+  if(newWrap) onExtraChange(newWrap);
 }
 
 function removeExtraRow(wrapId){
