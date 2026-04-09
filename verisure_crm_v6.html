@@ -81,8 +81,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);}
 /* RESULT BOX */
 
 /* DEVICE IMAGES */
-.device-img-preview{display:flex;align-items:center;gap:10px;background:var(--gray-100);border-radius:var(--radius-sm);padding:8px 12px;margin-top:4px;margin-bottom:8px;border:1px solid var(--gray-200);}
-.device-img-preview img{width:52px;height:52px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.15));}
+.device-img-preview{display:flex;align-items:center;gap:10px;background:white;border-radius:var(--radius-sm);padding:8px 12px;margin-top:4px;margin-bottom:8px;border:1px solid var(--gray-200);box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.device-img-preview img{width:52px;height:52px;object-fit:contain;flex-shrink:0;background:white;border-radius:6px;}
 .device-img-name{font-size:13px;font-weight:500;color:var(--black);}
 .device-img-desc{font-size:11px;color:var(--gray-400);margin-top:2px;}
 /* RESULT BOX halo */
@@ -1860,18 +1860,18 @@ function resetPresupuesto(){
 
 // ── DEVICE IMAGE MAP ──
 const DEVICE_IMG_MAP = {
-  'Shock Sensor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png',
-  'Orion': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
-  'Orion (Close Pack)': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png',
-  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/aquila-outdoor.png',
-  'Arlo Indoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-indoor.png',
-  'Arlo Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png',
-  'Zerovision': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/zerovision.png',
-  'Botón emergencias': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/sos.png',
-  'Control remoto': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/mando.png',
-  'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png',
-  'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png',
-  'Placa disuasoria': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/placa.png',
+  'Shock Sensor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png?v=2',
+  'Orion': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png?v=2',
+  'Orion (Close Pack)': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png?v=2',
+  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/aquila-outdoor.png?v=2',
+  'Arlo Indoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-indoor.png?v=2',
+  'Arlo Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png?v=2',
+  'Zerovision': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/zerovision.png?v=2',
+  'Botón emergencias': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/sos.png?v=2',
+  'Control remoto': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/mando.png?v=2',
+  'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png?v=2',
+  'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png?v=2',
+  'Placa disuasoria': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/placa.png?v=2',
 };
 const DEVICE_DESC = {
   'Shock Sensor': 'Triple detección: apertura, golpes y vibraciones',
