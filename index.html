@@ -79,7 +79,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);}
 .price-display-iva{font-size:11px;color:var(--gray-400);margin-top:2px;}
 
 /* RESULT BOX */
-.result-box{background:var(--red-bg);border:1.5px solid rgba(232,0,29,0.15);border-radius:var(--radius);padding:16px;margin-top:12px;}
+.result-box{background:var(--red-bg);border:1.5px solid rgba(232,0,29,0.15);border-radius:var(--radius);padding:16px;margin-top:12px;position:relative;overflow:hidden;}.result-box::before{content:'';position:absolute;top:-20px;right:-20px;width:180px;height:180px;background:url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/bg-halo-sm.avif') center/contain no-repeat;opacity:0.12;pointer-events:none;}
 .result-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(232,0,29,0.1);}
 .result-row:last-child{border-bottom:none;}
 .result-row.iva-row{opacity:0.7;}
@@ -239,14 +239,15 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
 
 
 <!-- ====== ONBOARDING / SETUP ====== -->
-<div id="onboarding" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--black);z-index:2000;overflow-y:auto">
-  <div style="max-width:420px;margin:0 auto;padding:40px 24px 60px">
+<div id="onboarding" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;overflow-y:auto;background:#0a0a0a url('https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/parallax-home.webp') center/cover no-repeat">
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.88) 100%)"></div>
+  <div style="position:relative;max-width:420px;margin:0 auto;padding:40px 24px 60px">
     <div style="text-align:center;margin-bottom:32px">
-      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:80px;object-fit:contain;filter:brightness(0) invert(1);margin-bottom:20px">
-      <div style="color:var(--white);font-size:22px;font-weight:600;margin-bottom:8px">Bienvenido al CRM</div>
-      <div style="color:var(--gray-400);font-size:14px;line-height:1.5">Completá tus datos para personalizar la herramienta. Podés editarlos en cualquier momento.</div>
+      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/logo-vertical.png" alt="Verisure" style="height:90px;object-fit:contain;filter:brightness(0) invert(1);margin-bottom:24px;display:block;margin-left:auto;margin-right:auto">
+      <div style="color:var(--white);font-size:22px;font-weight:600;margin-bottom:8px;letter-spacing:-0.3px">Bienvenido al CRM</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.6">Completá tus datos para personalizar la herramienta. Podés editarlos en cualquier momento.</div>
     </div>
-    <div style="background:var(--gray-900);border-radius:var(--radius);padding:20px">
+    <div style="background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:var(--radius);padding:20px;border:1px solid rgba(255,255,255,0.1)">
       <div class="form-row" style="margin-bottom:14px">
         <label style="color:var(--gray-400)">Nombre completo *</label>
         <input type="text" id="ob-nombre" placeholder="Ej: Carlos Galeano" style="background:var(--gray-800);border-color:var(--gray-600);color:var(--white)">
@@ -373,6 +374,9 @@ textarea.msg-box{resize:vertical;min-height:120px;width:100%;}
   <div class="card">
     <div class="card-title"><span class="dot"></span>Resumen</div>
     <div id="presupuesto-result"><div class="empty"><div class="empty-icon">📋</div>Completá los datos para ver el resumen</div></div>
+    <div id="kit-img-preview" style="display:none;text-align:center;margin-top:12px">
+      <img src="https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/kit-presense.png" alt="Kit PreSense" style="max-width:100%;height:auto;max-height:160px;object-fit:contain;opacity:0.92">
+    </div>
     <div class="btn-row" style="margin-top:12px">
       <button class="btn btn-primary" onclick="calcPresupuesto()">Calcular</button>
       <button class="btn btn-secondary" onclick="resetPresupuesto()">Reset</button>
@@ -993,6 +997,7 @@ function calcPresupuesto(){
     ${express==='Si'&&tipo==='RP'?'<div style="margin-top:6px;font-size:12px;color:var(--amber)">⚠️ Express solo aplica a visitas RE</div>':''}
   </div>`;
   document.getElementById('presupuesto-result').innerHTML=html;
+  document.getElementById('kit-img-preview').style.display='block';
 }
 
 function resetPresupuesto(){
