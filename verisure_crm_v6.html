@@ -1141,38 +1141,174 @@ function checkExpressVisibility(){
 }
 
 // ── EXTRAS ──
-function addExtra(listId,prefix){
-  const idx=prefix==='ext'?++extraCount:++extraCountCom;
-  const html=`<div class="extra-row" id="${prefix}-row-${idx}">
-    <select onchange="onExtraChange(this.closest('.extra-row'))">${EXTRAS_OPTS.map(e=>`<option value="${e}">${e}</option>`).join('')}</select>
-    <select>${CANT_OPTS.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
-    <select>${PRECIO_EXTRA_OPTS.map(p=>`<option value="${p}">${p}</option>`).join('')}</select>
-    <button class="btn-remove" onclick="removeExtraRow('${prefix}-row-${idx}')">×</button>
-  </div>
-  <div class="extra-bonif-row" id="${prefix}-bonif-${idx}">
-    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-600);cursor:pointer">
-      <input type="checkbox" id="${prefix}-bonif-chk-${idx}" onchange="onExtraChange(document.getElementById('${prefix}-row-${idx}'))" style="width:14px;height:14px;accent-color:var(--green)">
-      <span>Bonificado (instalación $0, cuota normal)</span>
-    </label>
-  </div>`;
-  document.getElementById(listId).insertAdjacentHTML('beforeend',html);
-  // Disparar imagen del primer dispositivo por defecto
-  const newRow=document.getElementById(prefix+'-row-'+idx);
-  if(newRow) onExtraChange(newRow);
+
+const DEVICE_IMG_MAP = {
+  'Shock Sensor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png?v=2',
+  'Orion': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png?v=2',
+  'Orion (Close Pack)': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png?v=2',
+  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/aquila-outdoor.png?v=2',
+  'Arlo Indoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-indoor.png?v=2',
+  'Arlo Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png?v=2',
+  'Zerovision': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/zerovision.png?v=2',
+  'Botón emergencias': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/sos.png?v=2',
+  'Control remoto': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/mando.png?v=2',
+  'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png?v=2',
+  'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png?v=2',
+  'Placa disuasoria': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/placa.png?v=2',
+  'Unidad Central': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/unidad-central.png?v=2',
+};
+const DEVICE_DESC = {
+  'Shock Sensor': 'Triple detección: apertura, golpes y vibraciones',
+  'Orion': 'Fotodetector de movimiento con ángulo 141°',
+  'Orion (Close Pack)': 'Orion a precio reducido',
+  'Aquila Outdoor': 'Detector exterior de largo alcance',
+  'Arlo Indoor': 'Cámara interior con visión nocturna',
+  'Arlo Outdoor': 'Cámara exterior con panel solar',
+  'Zerovision': 'Barrera de humo activada por CRA',
+  'Botón emergencias': 'Alerta silenciosa a Central',
+  'Control remoto': 'Control de alarma + botón SOS',
+  'Panel de control': 'Panel de entrada con habla/escucha',
+  'Starkey': 'Pack de llaves inteligentes x3',
+  'Placa disuasoria': 'Cartel disuasorio exterior — incluido gratis',
+  'Unidad Central': 'Cerebro del sistema — gestiona todas las señales',
+};
+function onExtraChange(wrap){
+  // wrap es el .extra-wrap que contiene todo
+  if(!wrap) return;
+  const sel = wrap.querySelector('select');
+  const disp = sel ? sel.value : '';
+  const preview = wrap.querySelector('.device-img-preview');
+  if(!disp || !DEVICE_IMG_MAP[disp]){
+    if(preview) preview.style.display='none';
+    return;
+  }
+  if(preview){
+    preview.style.display = 'flex';
+    preview.innerHTML = `<img src="${DEVICE_IMG_MAP[disp]}?v=2" alt="${disp}" onerror="this.style.display='none'" style="width:52px;height:52px;object-fit:contain;flex-shrink:0;background:white;border-radius:6px"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
+  }
 }
 
-function removeExtraRow(rowId){
-  const row=document.getElementById(rowId);
-  if(!row)return;
-  // Eliminar preview si existe
-  const next=row.nextElementSibling;
-  if(next&&next.classList.contains('device-img-preview'))next.remove();
-  row.remove();
+// ── SISTEMA DE USUARIOS ──
+// Approach simple: modal al abrir si no hay perfil guardado
+// Sin gestión de múltiples usuarios — cada dispositivo tiene su perfil
+
+var perfil = null;
+
+function _cargarPerfil() {
+  try {
+    var stored = localStorage.getItem('vcrm_perfil');
+    if (stored) perfil = JSON.parse(stored);
+  } catch(e) {}
+}
+
+function _guardarPerfilStorage() {
+  try { localStorage.setItem('vcrm_perfil', JSON.stringify(perfil)); } catch(e) {}
+}
+
+function chequearOnboarding() {
+  _cargarPerfil();
+  if (!perfil || !perfil.nombre) {
+    muMostrar();
+  } else {
+    aplicarPerfil();
+  }
+}
+
+function muMostrar() {
+  var m = document.getElementById('modal-usuario');
+  if (m) { m.style.display = 'block'; document.body.style.overflow = 'hidden'; }
+}
+
+function muOcultar() {
+  var m = document.getElementById('modal-usuario');
+  if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+}
+
+function muGuardar() {
+  var nombre = document.getElementById('mu-nombre').value.trim();
+  var matricula = document.getElementById('mu-matricula').value.trim();
+  if (!nombre || !matricula) {
+    document.getElementById('mu-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('mu-error').style.display = 'none';
+  perfil = {
+    nombre: nombre,
+    matricula: matricula,
+    celular: document.getElementById('mu-celular').value.trim(),
+    email: document.getElementById('mu-email').value.trim(),
+    delegacion: document.getElementById('mu-delegacion').value.trim(),
+    jefe: ''
+  };
+  _guardarPerfilStorage();
+  muOcultar();
+  aplicarPerfil();
+}
+
+function muCambiarUsuario() {
+  perfil = null;
+  try { localStorage.removeItem('vcrm_perfil'); } catch(e) {}
+  cerrarPerfil();
+  // Pre-llenar con datos actuales para facilitar edición
+  muMostrar();
+}
+
+function aplicarPerfil() {
+  if (!perfil) return;
+  var el = document.getElementById('header-experto-name');
+  if (el) el.textContent = perfil.nombre || '—';
+}
+
+function abrirPerfil() {
+  _cargarPerfil();
+  if (!perfil) return;
+  document.getElementById('perfil-nombre').value = perfil.nombre || '';
+  document.getElementById('perfil-matricula').value = perfil.matricula || '';
+  document.getElementById('perfil-celular').value = perfil.celular || '';
+  document.getElementById('perfil-email').value = perfil.email || '';
+  document.getElementById('perfil-jefe').value = perfil.jefe || '';
+  document.getElementById('perfil-delegacion').value = perfil.delegacion || '';
+  document.getElementById('modal-perfil').style.display = 'flex';
+}
+
+function cerrarPerfil() {
+  document.getElementById('modal-perfil').style.display = 'none';
+  document.getElementById('perfil-feedback').style.display = 'none';
+}
+
+function guardarPerfil() {
+  var nombre = document.getElementById('perfil-nombre').value.trim();
+  var matricula = document.getElementById('perfil-matricula').value.trim();
+  if (!nombre || !matricula) { alert('Nombre y matrícula son obligatorios'); return; }
+  perfil = {
+    nombre: nombre,
+    matricula: matricula,
+    celular: document.getElementById('perfil-celular').value.trim(),
+    email: document.getElementById('perfil-email').value.trim(),
+    jefe: document.getElementById('perfil-jefe').value.trim(),
+    delegacion: document.getElementById('perfil-delegacion').value.trim()
+  };
+  _guardarPerfilStorage();
+  aplicarPerfil();
+  document.getElementById('perfil-feedback').style.display = 'flex';
+  setTimeout(cerrarPerfil, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var mp = document.getElementById('modal-perfil');
+  if (mp) mp.addEventListener('click', function(e) { if (e.target === this) cerrarPerfil(); });
+});
+
+
+
+function removeExtraRow(wrapId){
+  const wrap=document.getElementById(wrapId);
+  if(wrap) wrap.remove();
 }
 
 function getExtrasPrecioVenta(listId){
   let total = 0;
-  document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+  document.querySelectorAll('#'+listId+' .extra-wrap').forEach(row=>{ const wrap=row;
     if(isBonificado(row)) return; // bonificado = $0 instalación
     const sels = row.querySelectorAll('select');
     const disp = sels[0].value, cantStr = sels[1].value, nivel = sels[2].value;
@@ -1187,7 +1323,7 @@ function getExtrasPrecioVenta(listId){
 
 function getExtrasDescVenta(listId){
   const items = [];
-  document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+  document.querySelectorAll('#'+listId+' .extra-wrap').forEach(row=>{ const wrap=row;
     const sels = row.querySelectorAll('select');
     const disp = sels[0].value, cantStr = sels[1].value, nivel = sels[2].value;
     const cantNum = parseInt(cantStr.replace('x',''));
@@ -1203,7 +1339,7 @@ function getExtrasDescVenta(listId){
 
 function getExtrasComision(listId){
   let total=0;
-  document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+  document.querySelectorAll('#'+listId+' .extra-wrap').forEach(row=>{ const wrap=row;
     if(isBonificado(row)) return; // bonificado = $0 comisión en instalación
     const sels=row.querySelectorAll('select');
     const disp=sels[0].value,cantStr=sels[1].value,precio=sels[2].value;
@@ -1217,7 +1353,7 @@ function getExtrasComision(listId){
 }
 function getExtrasCuota(listId){
   let total=0;
-  document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+  document.querySelectorAll('#'+listId+' .extra-wrap').forEach(row=>{ const wrap=row;
     const sels=row.querySelectorAll('select');
     const data=CUOTAS_EXTRAS[sels[0].value];if(!data)return;
     const c=data[sels[1].value];if(c)total+=c;
@@ -1226,7 +1362,7 @@ function getExtrasCuota(listId){
 }
 function getExtrasDesc(listId){
   const d=[];
-  document.querySelectorAll('#'+listId+' .extra-row').forEach(row=>{
+  document.querySelectorAll('#'+listId+' .extra-wrap').forEach(row=>{ const wrap=row;
     const sels=row.querySelectorAll('select');
     d.push(sels[1].value+' '+sels[0].value+' (precio '+sels[2].value+')');
   });
@@ -2038,181 +2174,6 @@ function resetPresupuesto(){
   extraCount=0;
 }
 
-// ── DEVICE IMAGE MAP ──
-const DEVICE_IMG_MAP = {
-  'Shock Sensor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/shocksensor.png?v=2',
-  'Orion': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png?v=2',
-  'Orion (Close Pack)': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/orion.png?v=2',
-  'Aquila Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/aquila-outdoor.png?v=2',
-  'Arlo Indoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-indoor.png?v=2',
-  'Arlo Outdoor': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/arlo-outdoor.png?v=2',
-  'Zerovision': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/zerovision.png?v=2',
-  'Botón emergencias': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/sos.png?v=2',
-  'Control remoto': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/mando.png?v=2',
-  'Panel de control': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/panel.png?v=2',
-  'Starkey': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/llavero.png?v=2',
-  'Placa disuasoria': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/placa.png?v=2',
-  'Unidad Central': 'https://carlosjaviergaleano1995-coder.github.io/verisure-crm/img/unidad-central.png?v=2',
-};
-const DEVICE_DESC = {
-  'Shock Sensor': 'Triple detección: apertura, golpes y vibraciones',
-  'Orion': 'Fotodetector de movimiento con ángulo 141°',
-  'Orion (Close Pack)': 'Orion a precio reducido',
-  'Aquila Outdoor': 'Detector exterior de largo alcance',
-  'Arlo Indoor': 'Cámara interior con visión nocturna',
-  'Arlo Outdoor': 'Cámara exterior con panel solar',
-  'Zerovision': 'Barrera de humo activada por CRA',
-  'Botón emergencias': 'Alerta silenciosa a Central',
-  'Control remoto': 'Control de alarma + botón SOS',
-  'Panel de control': 'Panel de entrada con habla/escucha',
-  'Starkey': 'Pack de llaves inteligentes x3',
-  'Placa disuasoria': 'Cartel disuasorio exterior — incluido gratis',
-  'Unidad Central': 'Cerebro del sistema — gestiona todas las señales',
-};
-function onExtraChange(row){
-  const sel=row.querySelector('select');
-  const disp=sel?sel.value:'';
-  // Buscar preview específico de ESTA fila (inmediatamente después)
-  let preview=row.nextElementSibling;
-  if(preview&&!preview.classList.contains('device-img-preview'))preview=null;
-  if(!disp||!DEVICE_IMG_MAP[disp]){if(preview)preview.remove();return;}
-  if(!preview){
-    preview=document.createElement('div');
-    preview.className='device-img-preview';
-    row.after(preview);
-  }
-  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'" style="width:52px;height:52px;object-fit:contain;flex-shrink:0"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
-}
-
-// ── SISTEMA DE USUARIOS ──
-// Approach simple: modal al abrir si no hay perfil guardado
-// Sin gestión de múltiples usuarios — cada dispositivo tiene su perfil
-
-var perfil = null;
-
-function _cargarPerfil() {
-  try {
-    var stored = localStorage.getItem('vcrm_perfil');
-    if (stored) perfil = JSON.parse(stored);
-  } catch(e) {}
-}
-
-function _guardarPerfilStorage() {
-  try { localStorage.setItem('vcrm_perfil', JSON.stringify(perfil)); } catch(e) {}
-}
-
-function chequearOnboarding() {
-  _cargarPerfil();
-  if (!perfil || !perfil.nombre) {
-    muMostrar();
-  } else {
-    aplicarPerfil();
-  }
-}
-
-function muMostrar() {
-  var m = document.getElementById('modal-usuario');
-  if (m) { m.style.display = 'block'; document.body.style.overflow = 'hidden'; }
-}
-
-function muOcultar() {
-  var m = document.getElementById('modal-usuario');
-  if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
-}
-
-function muGuardar() {
-  var nombre = document.getElementById('mu-nombre').value.trim();
-  var matricula = document.getElementById('mu-matricula').value.trim();
-  if (!nombre || !matricula) {
-    document.getElementById('mu-error').style.display = 'block';
-    return;
-  }
-  document.getElementById('mu-error').style.display = 'none';
-  perfil = {
-    nombre: nombre,
-    matricula: matricula,
-    celular: document.getElementById('mu-celular').value.trim(),
-    email: document.getElementById('mu-email').value.trim(),
-    delegacion: document.getElementById('mu-delegacion').value.trim(),
-    jefe: ''
-  };
-  _guardarPerfilStorage();
-  muOcultar();
-  aplicarPerfil();
-}
-
-function muCambiarUsuario() {
-  perfil = null;
-  try { localStorage.removeItem('vcrm_perfil'); } catch(e) {}
-  cerrarPerfil();
-  // Pre-llenar con datos actuales para facilitar edición
-  muMostrar();
-}
-
-function aplicarPerfil() {
-  if (!perfil) return;
-  var el = document.getElementById('header-experto-name');
-  if (el) el.textContent = perfil.nombre || '—';
-}
-
-function abrirPerfil() {
-  _cargarPerfil();
-  if (!perfil) return;
-  document.getElementById('perfil-nombre').value = perfil.nombre || '';
-  document.getElementById('perfil-matricula').value = perfil.matricula || '';
-  document.getElementById('perfil-celular').value = perfil.celular || '';
-  document.getElementById('perfil-email').value = perfil.email || '';
-  document.getElementById('perfil-jefe').value = perfil.jefe || '';
-  document.getElementById('perfil-delegacion').value = perfil.delegacion || '';
-  document.getElementById('modal-perfil').style.display = 'flex';
-}
-
-function cerrarPerfil() {
-  document.getElementById('modal-perfil').style.display = 'none';
-  document.getElementById('perfil-feedback').style.display = 'none';
-}
-
-function guardarPerfil() {
-  var nombre = document.getElementById('perfil-nombre').value.trim();
-  var matricula = document.getElementById('perfil-matricula').value.trim();
-  if (!nombre || !matricula) { alert('Nombre y matrícula son obligatorios'); return; }
-  perfil = {
-    nombre: nombre,
-    matricula: matricula,
-    celular: document.getElementById('perfil-celular').value.trim(),
-    email: document.getElementById('perfil-email').value.trim(),
-    jefe: document.getElementById('perfil-jefe').value.trim(),
-    delegacion: document.getElementById('perfil-delegacion').value.trim()
-  };
-  _guardarPerfilStorage();
-  aplicarPerfil();
-  document.getElementById('perfil-feedback').style.display = 'flex';
-  setTimeout(cerrarPerfil, 1500);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  var mp = document.getElementById('modal-perfil');
-  if (mp) mp.addEventListener('click', function(e) { if (e.target === this) cerrarPerfil(); });
-});
-
-
-// ── DEVICE IMAGE MAP ──
-
-
-function onExtraChange(row){
-  const sel=row.querySelector('select');
-  const disp=sel?sel.value:'';
-  // Buscar preview específico de ESTA fila (inmediatamente después)
-  let preview=row.nextElementSibling;
-  if(preview&&!preview.classList.contains('device-img-preview'))preview=null;
-  if(!disp||!DEVICE_IMG_MAP[disp]){if(preview)preview.remove();return;}
-  if(!preview){
-    preview=document.createElement('div');
-    preview.className='device-img-preview';
-    row.after(preview);
-  }
-  preview.innerHTML=`<img src="${DEVICE_IMG_MAP[disp]}" alt="${disp}" onerror="this.style.display='none'" style="width:52px;height:52px;object-fit:contain;flex-shrink:0"><div><div class="device-img-name">${disp}</div><div class="device-img-desc">${DEVICE_DESC[disp]||''}</div></div>`;
-}
 
 
 // ── PROMOS DEL DÍA ──
@@ -2276,11 +2237,12 @@ function updateCuotaDisplay(){
 }
 
 // ── BONIFICADO CHECK ──
-function isBonificado(row){
-  if(!row) return false;
-  var bonifRow = row.nextElementSibling;
-  if(!bonifRow || !bonifRow.classList.contains('extra-bonif-row')) return false;
-  var chk = bonifRow.querySelector('input[type=checkbox]');
+function isBonificado(wrap){
+  if(!wrap) return false;
+  // wrap puede ser el .extra-wrap o el .extra-row (compatibilidad)
+  var container = wrap.classList.contains('extra-wrap') ? wrap : wrap.closest('.extra-wrap');
+  if(!container) return false;
+  var chk = container.querySelector('input[type=checkbox]');
   return chk ? chk.checked : false;
 }
 
